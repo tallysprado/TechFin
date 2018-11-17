@@ -5,6 +5,7 @@
         <group>
             <file>file:/home/tallys/teste/TechFin/src/main/Fintech.java</file>
             <file>file:/home/tallys/teste/TechFin/src/login/controller/LoginFXMLController.java</file>
+            <file>file:/home/tallys/teste/TechFin/src/login/Email.java</file>
             <file>file:/home/tallys/teste/TechFin/src/META-INF/persistence.xml</file>
         </group>
     </open-files>

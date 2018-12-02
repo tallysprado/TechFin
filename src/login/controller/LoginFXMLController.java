@@ -24,8 +24,8 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
-import login.model.Usuario;
 import login.view.UsuarioForm;
+import pagamentos.model.Cliente;
 import principal.view.Principal;
 
 /**
@@ -43,7 +43,7 @@ public class LoginFXMLController implements Initializable {
     /**
      * Initializes the controller class.
      */
-    List<Usuario> list;
+    List<Cliente> list;
     EntityManager entityManager;
     Query query;
 
@@ -51,7 +51,7 @@ public class LoginFXMLController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
         entityManager = java.beans.Beans.isDesignTime() ? null : javax.persistence.Persistence.createEntityManagerFactory("Fintech_SwingPU").createEntityManager();
-        query = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT u FROM Usuario u");
+        query = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT u FROM Cliente u");
         list = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(query.getResultList());
 
     }
@@ -75,7 +75,7 @@ public class LoginFXMLController implements Initializable {
     @FXML
     private void login() throws IOException {
         refresh();
-        for (Usuario u : list) {
+        for (Cliente u : list) {
             if (usuarioField.getText().equals(u.getUser()) && senhaField.getText().equals(u.getSenha())) {
 
                 Alert alert = new Alert(AlertType.INFORMATION);

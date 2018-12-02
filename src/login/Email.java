@@ -14,7 +14,7 @@ import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.swing.JOptionPane;
-import login.model.Usuario;
+
 
 /*
  * To change this license header, choose License Headers in Project Properties.

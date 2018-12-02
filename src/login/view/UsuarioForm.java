@@ -16,14 +16,13 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import login.Email;
-import login.model.Usuario;
+import pagamentos.model.Cliente;
 
 /**
  *
  * @author root
  */
 public class UsuarioForm extends JPanel {
-
     JFrame frame;
 
     public void run() {
@@ -35,9 +34,9 @@ public class UsuarioForm extends JPanel {
         frame.setVisible(true);
         frame.setLocationRelativeTo(null);
     }
-    Usuario u;
+    
+    Cliente u;
     int token;
-
     public UsuarioForm() {
         initComponents();
         if (!Beans.isDesignTime()) {
@@ -57,17 +56,23 @@ public class UsuarioForm extends JPanel {
     private void initComponents() {
 
         entityManager = java.beans.Beans.isDesignTime() ? null : javax.persistence.Persistence.createEntityManagerFactory("Fintech_SwingPU").createEntityManager();
-        query = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT u FROM Usuario u");
+        query = java.beans.Beans.isDesignTime() ? null : entityManager.createQuery("SELECT c FROM Cliente c");
         list = java.beans.Beans.isDesignTime() ? java.util.Collections.emptyList() : org.jdesktop.observablecollections.ObservableCollections.observableList(query.getResultList());
         nomeLabel = new javax.swing.JLabel();
         emailLabel = new javax.swing.JLabel();
         userLabel = new javax.swing.JLabel();
         senhaLabel = new javax.swing.JLabel();
+        cpfLabel = new javax.swing.JLabel();
+        enderecoLabel = new javax.swing.JLabel();
+        telefoneLabel = new javax.swing.JLabel();
         nomeField = new javax.swing.JTextField();
         emailField = new javax.swing.JTextField();
         userField = new javax.swing.JTextField();
+        senhaField = new javax.swing.JTextField();
+        cpfField = new javax.swing.JTextField();
+        enderecoField = new javax.swing.JTextField();
+        telefoneField = new javax.swing.JTextField();
         saveButton = new javax.swing.JButton();
-        senhaField = new javax.swing.JPasswordField();
 
         FormListener formListener = new FormListener();
 
@@ -78,6 +83,26 @@ public class UsuarioForm extends JPanel {
         userLabel.setText("User:");
 
         senhaLabel.setText("Senha:");
+
+        cpfLabel.setText("Cpf:");
+
+        enderecoLabel.setText("Endereco:");
+
+        telefoneLabel.setText("Telefone:");
+
+        nomeField.setText("");
+
+        emailField.setText("");
+
+        userField.setText("");
+
+        senhaField.setText("");
+
+        cpfField.setText("");
+
+        enderecoField.setText("");
+
+        telefoneField.setText("");
 
         saveButton.setText("Salvar");
         saveButton.addActionListener(formListener);
@@ -97,13 +122,19 @@ public class UsuarioForm extends JPanel {
                             .addComponent(nomeLabel)
                             .addComponent(emailLabel)
                             .addComponent(userLabel)
-                            .addComponent(senhaLabel))
+                            .addComponent(senhaLabel)
+                            .addComponent(cpfLabel)
+                            .addComponent(enderecoLabel)
+                            .addComponent(telefoneLabel))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(nomeField, javax.swing.GroupLayout.DEFAULT_SIZE, 346, Short.MAX_VALUE)
-                            .addComponent(emailField, javax.swing.GroupLayout.DEFAULT_SIZE, 346, Short.MAX_VALUE)
-                            .addComponent(userField, javax.swing.GroupLayout.DEFAULT_SIZE, 346, Short.MAX_VALUE)
-                            .addComponent(senhaField))))
+                            .addComponent(nomeField, javax.swing.GroupLayout.DEFAULT_SIZE, 315, Short.MAX_VALUE)
+                            .addComponent(emailField, javax.swing.GroupLayout.DEFAULT_SIZE, 315, Short.MAX_VALUE)
+                            .addComponent(userField, javax.swing.GroupLayout.DEFAULT_SIZE, 315, Short.MAX_VALUE)
+                            .addComponent(senhaField, javax.swing.GroupLayout.DEFAULT_SIZE, 315, Short.MAX_VALUE)
+                            .addComponent(cpfField, javax.swing.GroupLayout.DEFAULT_SIZE, 315, Short.MAX_VALUE)
+                            .addComponent(enderecoField, javax.swing.GroupLayout.DEFAULT_SIZE, 315, Short.MAX_VALUE)
+                            .addComponent(telefoneField, javax.swing.GroupLayout.DEFAULT_SIZE, 315, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -126,6 +157,18 @@ public class UsuarioForm extends JPanel {
                     .addComponent(senhaLabel)
                     .addComponent(senhaField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cpfLabel)
+                    .addComponent(cpfField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(enderecoLabel)
+                    .addComponent(enderecoField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(telefoneLabel)
+                    .addComponent(telefoneField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(saveButton)
                 .addContainerGap())
         );
@@ -143,12 +186,44 @@ public class UsuarioForm extends JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     
+   
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
+        
+        if(list.isEmpty()){
+            if(list.isEmpty()){
+                new Email().sendEmail(token, emailField.getText());
+                int inToken = Integer.valueOf(JOptionPane.showInputDialog(this, "Insira o TOKEN enviado para "
+                        + emailField.getText() + ":", "Token de Segurança", JOptionPane.INFORMATION_MESSAGE));
+
+                if (token == inToken) {
+
+                    u = new Cliente();
+
+                    u.setToken(String.valueOf(token));
+                    u.setEmail(emailField.getText());
+                    u.setNome(nomeField.getText());
+                    u.setSenha(senhaField.getText());
+                    u.setUser(userField.getText());
+
+                    entityManager.persist(u);
+                    entityManager.getTransaction().commit();
+                    
+                    JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
+                    topFrame.dispose();
+                    
+                    
+                } else {
+                    JOptionPane.showMessageDialog(this, "Token Incorreto!");
+                }
+            }
+        }
+        
         java.util.Collection data = query.getResultList();
         for (Object entity : data) {
             entityManager.refresh(entity);
         }
-        for (Usuario u : list) {
+        
+        for (Cliente u : list) {
             if (userField.getText().equals(u.getUser())) {
                 JOptionPane.showMessageDialog(this, "Nome de usuário existente!");
                 userLabel.setForeground(Color.red);
@@ -161,7 +236,7 @@ public class UsuarioForm extends JPanel {
 
                 if (token == inToken) {
 
-                    u = new Usuario();
+                    u = new Cliente();
 
                     u.setToken(String.valueOf(token));
                     u.setEmail(emailField.getText());
@@ -181,22 +256,26 @@ public class UsuarioForm extends JPanel {
                 }
             }
         }
-
-
     }//GEN-LAST:event_saveButtonActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField cpfField;
+    private javax.swing.JLabel cpfLabel;
     private javax.swing.JTextField emailField;
     private javax.swing.JLabel emailLabel;
+    private javax.swing.JTextField enderecoField;
+    private javax.swing.JLabel enderecoLabel;
     private javax.persistence.EntityManager entityManager;
-    private java.util.List<login.model.Usuario> list;
+    private java.util.List<pagamentos.model.Cliente> list;
     private javax.swing.JTextField nomeField;
     private javax.swing.JLabel nomeLabel;
     private javax.persistence.Query query;
     private javax.swing.JButton saveButton;
-    private javax.swing.JPasswordField senhaField;
+    private javax.swing.JTextField senhaField;
     private javax.swing.JLabel senhaLabel;
+    private javax.swing.JTextField telefoneField;
+    private javax.swing.JLabel telefoneLabel;
     private javax.swing.JTextField userField;
     private javax.swing.JLabel userLabel;
     // End of variables declaration//GEN-END:variables
@@ -235,5 +314,5 @@ public class UsuarioForm extends JPanel {
             }
         });
     }
-
+    
 }

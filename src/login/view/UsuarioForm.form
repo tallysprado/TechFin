@@ -13,7 +13,7 @@
     </Component>
     <Component class="javax.persistence.Query" name="query">
       <Properties>
-        <Property name="query" type="java.lang.String" value="SELECT u FROM Usuario u"/>
+        <Property name="query" type="java.lang.String" value="SELECT c FROM Cliente c"/>
         <Property name="entityManager" type="java.lang.Object" editor="org.netbeans.modules.form.j2ee.J2EEPropertyModifier$EMProperty$EntityManagerEditor">
           <ComponentRef name="entityManager"/>
         </Property>
@@ -31,7 +31,7 @@
         <Property name="observable" type="boolean" value="true"/>
       </Properties>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;login.model.Usuario&gt;"/>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;pagamentos.model.Cliente&gt;"/>
         <AuxValue name="JavaCodeGenerator_VariableLocal" type="java.lang.Boolean" value="false"/>
         <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="2"/>
       </AuxValues>
@@ -65,13 +65,19 @@
                           <Component id="emailLabel" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="userLabel" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="senhaLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="cpfLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="enderecoLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="telefoneLabel" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="nomeField" alignment="0" pref="346" max="32767" attributes="0"/>
-                          <Component id="emailField" alignment="0" pref="346" max="32767" attributes="0"/>
-                          <Component id="userField" alignment="0" pref="346" max="32767" attributes="0"/>
-                          <Component id="senhaField" alignment="0" max="32767" attributes="0"/>
+                          <Component id="nomeField" alignment="0" pref="315" max="32767" attributes="0"/>
+                          <Component id="emailField" alignment="0" pref="315" max="32767" attributes="0"/>
+                          <Component id="userField" alignment="0" pref="315" max="32767" attributes="0"/>
+                          <Component id="senhaField" alignment="0" pref="315" max="32767" attributes="0"/>
+                          <Component id="cpfField" alignment="0" pref="315" max="32767" attributes="0"/>
+                          <Component id="enderecoField" alignment="0" pref="315" max="32767" attributes="0"/>
+                          <Component id="telefoneField" alignment="0" pref="315" max="32767" attributes="0"/>
                       </Group>
                   </Group>
               </Group>
@@ -102,6 +108,21 @@
                   <Component id="senhaLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="senhaField" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
+              <EmptySpace min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="cpfLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="cpfField" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="enderecoLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="enderecoField" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="telefoneLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="telefoneField" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
               <EmptySpace min="-2" max="-2" attributes="1"/>
               <Component id="saveButton" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="-2" max="-2" attributes="0"/>
@@ -130,11 +151,34 @@
         <Property name="text" type="java.lang.String" value="Senha:"/>
       </Properties>
     </Component>
+    <Component class="javax.swing.JLabel" name="cpfLabel">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Cpf:"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="enderecoLabel">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Endereco:"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="telefoneLabel">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Telefone:"/>
+      </Properties>
+    </Component>
     <Component class="javax.swing.JTextField" name="nomeField">
     </Component>
     <Component class="javax.swing.JTextField" name="emailField">
     </Component>
     <Component class="javax.swing.JTextField" name="userField">
+    </Component>
+    <Component class="javax.swing.JTextField" name="senhaField">
+    </Component>
+    <Component class="javax.swing.JTextField" name="cpfField">
+    </Component>
+    <Component class="javax.swing.JTextField" name="enderecoField">
+    </Component>
+    <Component class="javax.swing.JTextField" name="telefoneField">
     </Component>
     <Component class="javax.swing.JButton" name="saveButton">
       <Properties>
@@ -147,8 +191,6 @@
         <AuxValue name="JavaCodeGenerator_VariableLocal" type="java.lang.Boolean" value="false"/>
         <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="2"/>
       </AuxValues>
-    </Component>
-    <Component class="javax.swing.JPasswordField" name="senhaField">
     </Component>
   </SubComponents>
 </Form>

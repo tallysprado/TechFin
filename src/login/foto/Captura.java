@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 package login.foto;
-
+/*
 import java.awt.BorderLayout;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;

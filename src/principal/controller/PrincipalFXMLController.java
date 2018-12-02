@@ -7,7 +7,14 @@ package principal.controller;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.embed.swing.SwingNode;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
+import javafx.scene.layout.Pane;
+import javax.swing.SwingUtilities;
+import login.view.UsuarioForm;
 
 /**
  * FXML Controller class
@@ -22,6 +29,38 @@ public class PrincipalFXMLController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-    }    
+    }   
+    @FXML
+    Pane panePagamentos;
+    @FXML
+    TabPane tabPane;
+    @FXML
+    Tab tabPagamentos;
+    
+    @FXML
+    private void pagar(){
+        final SwingNode swingNode = new SwingNode();
+        tabPagamentos = new Tab();
+        panePagamentos = new Pane();
+        createSwingContent(swingNode);
+        panePagamentos.getChildren().add(swingNode);
+        
+        tabPagamentos.setText("Pagamentos");
+        tabPagamentos.setContent(panePagamentos);
+        
+        tabPane.getTabs().addAll(tabPagamentos);
+        
+        tabPane.setVisible(true);
+    }
+    
+    private void createSwingContent(final SwingNode swingNode) {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                
+                swingNode.setContent(new UsuarioForm());
+            }
+        });
+    }
     
 }

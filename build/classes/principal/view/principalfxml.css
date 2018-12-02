@@ -1,7 +1,20 @@
-/*
- * Empty Stylesheet file.
- */
+#pagamentos > .label{
+    -fx-graphic: url("media/debit-card.png");
+}
+#pagamentos .accelerator-text{
+    -fx-graphic: none;
+}
 
-.mainFxmlClass {
+#investimentos > .label{
+    -fx-graphic: url("media/growth.png");
+}
+#investimentos .accelerator-text{
+    -fx-graphic: none;
+}
 
+#emprestimos > .label{
+    -fx-graphic: url("media/loan.png");
+}
+#emperstimos .accelerator-text{
+    -fx-graphic: none;
 }

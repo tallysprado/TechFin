@@ -5,13 +5,17 @@
  */
 package login.controller;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.DialogPane;
@@ -21,7 +25,7 @@ import javafx.stage.Stage;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import login.model.Usuario;
-import login.view.Usuarios;
+import login.view.UsuarioForm;
 import principal.view.Principal;
 
 /**
@@ -65,11 +69,11 @@ public class LoginFXMLController implements Initializable {
 
     @FXML
     private void cadastro() {
-        new Usuarios().run();
+        new UsuarioForm().run();
     }
 
     @FXML
-    private void login() {
+    private void login() throws IOException {
         refresh();
         for (Usuario u : list) {
             if (usuarioField.getText().equals(u.getUser()) && senhaField.getText().equals(u.getSenha())) {
@@ -80,10 +84,15 @@ public class LoginFXMLController implements Initializable {
                 alert.setContentText("Seja bem vindo " + u.getNome());
                 alert.showAndWait();
 
-                Principal p = new Principal();
-                p.setVisible(true);
+                Parent root = FXMLLoader.load(getClass().getResource("/principal/view/PrincipalFXML.fxml"));
 
-                Stage stage = (Stage) usuarioField.getScene().getWindow();
+                Scene scene = new Scene(root);
+                Stage stage = new Stage();
+                stage.setScene(scene);
+
+                stage.show();
+
+                stage = (Stage) usuarioField.getScene().getWindow();
                 stage.close();
             }
         }

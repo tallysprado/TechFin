@@ -13,6 +13,8 @@ import javax.mail.Transport;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import javax.swing.JOptionPane;
+import login.model.Usuario;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -29,6 +31,7 @@ public class Email {
         this.email(t,email);
     }
 
+  
     private static void email(int t, String email) {
   
         final String SSL_FACTORY = "javax.net.ssl.SSLSocketFactory";
@@ -44,8 +47,8 @@ public class Email {
         props.put("mail.debug", "true");
         props.put("mail.store.protocol", "pop3");
         props.put("mail.transport.protocol", "smtp");
-        final String username = "tallys.prado@gmail.com";//
-        final String password = "";
+        final String username = "tallysprado@alu.ufc.br";//
+        final String password = "SiliconValley!123";
         try {
             Session session = Session.getDefaultInstance(props,
                     new Authenticator() {
@@ -70,5 +73,32 @@ public class Email {
             System.out.println("Falha no engano: " + e);
         }
     }
+
+/*
+    public void salvar{
+    new Email().sendEmail(token, emailField.getText());
+        int inToken = Integer.valueOf(JOptionPane.showInputDialog(this, "Insira o TOKEN enviado para "
+                + emailField.getText() + ":", "Antes de continuarmos!", JOptionPane.INFORMATION_MESSAGE));
+
+        if (token == inToken) {
+
+            u = new Usuarios();
+
+            u.setToken(String.valueOf(token));
+            u.setEmail(emailField.getText());
+            u.setNome(nomeField.getText());
+            u.setSenha(senhaField.getText());
+            u.setUser(userField.getText());
+
+            entityManager.persist(u);
+            entityManager.getTransaction().commit();
+
+            
+
+        } else {
+            JOptionPane.showMessageDialog(this, "Token Incorreto!");
+        }
+}  
+*/
 
 }

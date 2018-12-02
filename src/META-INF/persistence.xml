@@ -3,6 +3,9 @@
   <persistence-unit name="Fintech_SwingPU" transaction-type="RESOURCE_LOCAL">
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
     <class>login.model.Usuario</class>
+    <class>pagamentos.model.Cliente</class>
+    <class>pagamentos.model.Pagamentos</class>
+    <class>pagamentos.model.Boleto</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/db?zeroDateTimeBehavior=convertToNull"/>
       <property name="javax.persistence.jdbc.user" value="tallys"/>

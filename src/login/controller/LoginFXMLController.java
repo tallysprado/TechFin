@@ -94,6 +94,7 @@ public class LoginFXMLController implements Initializable {
 
                 stage = (Stage) usuarioField.getScene().getWindow();
                 stage.close();
+                break;
             }
         }
     }

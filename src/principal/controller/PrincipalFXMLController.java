@@ -15,6 +15,7 @@ import javafx.scene.control.TabPane;
 import javafx.scene.layout.Pane;
 import javax.swing.SwingUtilities;
 import login.view.UsuarioForm;
+import pagamentos.view.TransacaoForm;
 
 /**
  * FXML Controller class
@@ -42,7 +43,8 @@ public class PrincipalFXMLController implements Initializable {
         final SwingNode swingNode = new SwingNode();
         tabPagamentos = new Tab();
         panePagamentos = new Pane();
-        createSwingContent(swingNode);
+        //createSwingContent(swingNode);
+        swingNode.setContent(new UsuarioForm());
         panePagamentos.getChildren().add(swingNode);
         
         tabPagamentos.setText("Pagamentos");
@@ -57,8 +59,8 @@ public class PrincipalFXMLController implements Initializable {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                
-                swingNode.setContent(new UsuarioForm());
+                //swingNode.setContent(new UsuarioForm());
+               // swingNode.setContent(new TransacaoForm());
             }
         });
     }

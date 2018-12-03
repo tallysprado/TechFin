@@ -17,7 +17,7 @@
         <menus>
           <Menu fx:id="pagamentos" mnemonicParsing="false" text="PAGAMENTOS">
             <items>
-              <MenuItem mnemonicParsing="false" onAction="#pagar" text="Efetuar Pagamento" />
+              <MenuItem mnemonicParsing="false" onAction="#pagar" text="Transaçao" />
             </items>
           </Menu>
           <Menu fx:id="investimentos" mnemonicParsing="false" text="INVESTIMENTOS">

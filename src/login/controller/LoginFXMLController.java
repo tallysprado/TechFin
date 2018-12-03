@@ -5,7 +5,10 @@
  */
 package login.controller;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -71,7 +74,7 @@ public class LoginFXMLController implements Initializable {
     private void cadastro() {
         new UsuarioForm().run();
     }
-
+   
     @FXML
     private void login() throws IOException {
         refresh();
@@ -83,7 +86,7 @@ public class LoginFXMLController implements Initializable {
                 alert.setHeaderText("TechFin - Seu dinheiro, nossa felicidade!");
                 alert.setContentText("Seja bem vindo " + u.getNome());
                 alert.showAndWait();
-
+                
                 Parent root = FXMLLoader.load(getClass().getResource("/principal/view/PrincipalFXML.fxml"));
 
                 Scene scene = new Scene(root);
@@ -94,6 +97,13 @@ public class LoginFXMLController implements Initializable {
 
                 stage = (Stage) usuarioField.getScene().getWindow();
                 stage.close();
+                /*
+                System.out.println(u.getNome());
+                FileWriter fw = new FileWriter("cliente.txt");
+                PrintWriter pw = new PrintWriter(fw);
+                pw.print(u.getNome());
+                fw.close();
+                */
                 break;
             }
         }

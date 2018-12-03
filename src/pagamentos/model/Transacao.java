@@ -34,9 +34,9 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Transacao.findAll", query = "SELECT t FROM Transacao t")
     , @NamedQuery(name = "Transacao.findByCodTransacao", query = "SELECT t FROM Transacao t WHERE t.codTransacao = :codTransacao")
+    , @NamedQuery(name = "Transacao.findByCliente", query = "SELECT t FROM Transacao t WHERE t.cliente = :cliente")
     , @NamedQuery(name = "Transacao.findByUsuario", query = "SELECT t FROM Transacao t WHERE t.usuario = :usuario")
-    , @NamedQuery(name = "Transacao.findByValorTransacao", query = "SELECT t FROM Transacao t WHERE t.valorTransacao = :valorTransacao")
-    , @NamedQuery(name = "Transacao.findByDataTransacao", query = "SELECT t FROM Transacao t WHERE t.dataTransacao = :dataTransacao")})
+    , @NamedQuery(name = "Transacao.findByValorTransacao", query = "SELECT t FROM Transacao t WHERE t.valorTransacao = :valorTransacao")})
 public class Transacao implements Serializable {
 
     @Transient
@@ -48,13 +48,13 @@ public class Transacao implements Serializable {
     @Basic(optional = false)
     @Column(name = "codTransacao")
     private Integer codTransacao;
+    @Column(name = "Cliente")
+    private String cliente;
     @Column(name = "Usuario")
     private String usuario;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "ValorTransacao")
     private BigDecimal valorTransacao;
-    @Column(name = "DataTransacao")
-    private String dataTransacao;
     @ManyToMany(mappedBy = "transacaoCollection")
     private Collection<Cliente> clienteCollection;
 
@@ -75,6 +75,16 @@ public class Transacao implements Serializable {
         changeSupport.firePropertyChange("codTransacao", oldCodTransacao, codTransacao);
     }
 
+    public String getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(String cliente) {
+        String oldCliente = this.cliente;
+        this.cliente = cliente;
+        changeSupport.firePropertyChange("cliente", oldCliente, cliente);
+    }
+
     public String getUsuario() {
         return usuario;
     }
@@ -93,16 +103,6 @@ public class Transacao implements Serializable {
         BigDecimal oldValorTransacao = this.valorTransacao;
         this.valorTransacao = valorTransacao;
         changeSupport.firePropertyChange("valorTransacao", oldValorTransacao, valorTransacao);
-    }
-
-    public String getDataTransacao() {
-        return dataTransacao;
-    }
-
-    public void setDataTransacao(String dataTransacao) {
-        String oldDataTransacao = this.dataTransacao;
-        this.dataTransacao = dataTransacao;
-        changeSupport.firePropertyChange("dataTransacao", oldDataTransacao, dataTransacao);
     }
 
     @XmlTransient

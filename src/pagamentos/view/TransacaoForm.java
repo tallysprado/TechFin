@@ -50,7 +50,7 @@ public class TransacaoForm extends JPanel {
     public void novoPagamento(String usuario, int codTrans) {
         int idCli = 0;
         try {
-            // create a mysql database connection
+            
             String myDriver = "com.mysql.jdbc.Driver";
             String myUrl = "jdbc:mysql://127.0.0.1/db";
             Class.forName(myDriver);
@@ -64,15 +64,15 @@ public class TransacaoForm extends JPanel {
                 idCli = rs.getInt("Id_Cliente");
             }
 
-            // the mysql insert statement
+            
             String query = "INSERT INTO Cliente_tem_Transacao (Id_Cliente, codTransacao) VALUES (?,?)";
 
-            // create the mysql insert preparedstatement
+            
             PreparedStatement preparedStmt = (PreparedStatement) conn.prepareStatement(query);
             preparedStmt.setInt(1, idCli);
             preparedStmt.setInt(2, codTrans);
 
-            // execute the preparedstatement
+
             preparedStmt.execute();
 
             conn.close();
@@ -137,6 +137,8 @@ public class TransacaoForm extends JPanel {
 
         valorTransacaoLabel.setText("Valor Transacao:");
 
+        codTransacaoField.setEditable(false);
+
         org.jdesktop.beansbinding.Binding binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.codTransacao}"), codTransacaoField, org.jdesktop.beansbinding.BeanProperty.create("text"));
         binding.setSourceUnreadableValue("null");
         bindingGroup.addBinding(binding);
@@ -155,16 +157,16 @@ public class TransacaoForm extends JPanel {
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), valorTransacaoField, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
 
-        saveButton.setText("Save");
+        saveButton.setText("Salvar");
         saveButton.addActionListener(formListener);
 
-        refreshButton.setText("Refresh");
+        refreshButton.setText("Atualizar");
         refreshButton.addActionListener(formListener);
 
-        newButton.setText("New");
+        newButton.setText("Novo");
         newButton.addActionListener(formListener);
 
-        deleteButton.setText("Delete");
+        deleteButton.setText("Deletar");
 
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), deleteButton, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
@@ -175,30 +177,30 @@ public class TransacaoForm extends JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(newButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(deleteButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(refreshButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(saveButton)
-                .addContainerGap())
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(codTransacaoLabel)
-                    .addComponent(usuarioLabel)
-                    .addComponent(valorTransacaoLabel))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(codTransacaoField, javax.swing.GroupLayout.DEFAULT_SIZE, 315, Short.MAX_VALUE)
-                    .addComponent(usuarioField, javax.swing.GroupLayout.DEFAULT_SIZE, 315, Short.MAX_VALUE)
-                    .addComponent(valorTransacaoField, javax.swing.GroupLayout.DEFAULT_SIZE, 315, Short.MAX_VALUE))
-                .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(newButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(deleteButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(refreshButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(saveButton))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(codTransacaoLabel)
+                                    .addComponent(usuarioLabel)
+                                    .addComponent(valorTransacaoLabel))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(codTransacaoField, javax.swing.GroupLayout.DEFAULT_SIZE, 315, Short.MAX_VALUE)
+                                    .addComponent(usuarioField, javax.swing.GroupLayout.DEFAULT_SIZE, 315, Short.MAX_VALUE)
+                                    .addComponent(valorTransacaoField, javax.swing.GroupLayout.DEFAULT_SIZE, 315, Short.MAX_VALUE)))
+                            .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE))))
                 .addContainerGap())
         );
 
@@ -261,6 +263,7 @@ public class TransacaoForm extends JPanel {
         for (Object entity : data) {
             entityManager.refresh(entity);
         }
+        novoPagamento(usuarioField.getText(), list.get(list.size()-1).getCodTransacao());
         list.clear();
         list.addAll(data);
     }//GEN-LAST:event_refreshButtonActionPerformed
@@ -297,6 +300,7 @@ public class TransacaoForm extends JPanel {
                 
                 merged.add(entityManager.merge(t));
             }
+            
             list.clear();
             list.addAll(merged);
         }

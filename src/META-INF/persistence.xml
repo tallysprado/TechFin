@@ -7,7 +7,7 @@
     <class>pagamentos.model.Pagamentos</class>
     <class>pagamentos.model.Boleto</class>
     <class>pagamentos.model.Transacao</class>
-    <class>pagamentos.view.ClientetemTransacao</class>
+    <class>pagamentos.model.ClientetemTransacao</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/db?zeroDateTimeBehavior=convertToNull"/>
       <property name="javax.persistence.jdbc.user" value="tallys"/>

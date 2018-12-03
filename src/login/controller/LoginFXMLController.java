@@ -87,7 +87,7 @@ public class LoginFXMLController implements Initializable {
                 alert.setContentText("Seja bem vindo " + u.getNome());
                 alert.showAndWait();
                 
-                Parent root = FXMLLoader.load(getClass().getResource("/principal/view/PrincipalFXML.fxml"));
+                /*Parent root = FXMLLoader.load(getClass().getResource("/principal/view/PrincipalFXML.fxml"));
 
                 Scene scene = new Scene(root);
                 Stage stage = new Stage();
@@ -97,13 +97,18 @@ public class LoginFXMLController implements Initializable {
 
                 stage = (Stage) usuarioField.getScene().getWindow();
                 stage.close();
-                /*
+                
                 System.out.println(u.getNome());
                 FileWriter fw = new FileWriter("cliente.txt");
                 PrintWriter pw = new PrintWriter(fw);
                 pw.print(u.getNome());
                 fw.close();
                 */
+                
+                Stage stage = (Stage) usuarioField.getScene().getWindow();
+                stage.close();
+                Principal p = new Principal();
+                p.setVisible(true);
                 break;
             }
         }

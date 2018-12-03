@@ -1,18 +1,27 @@
 package login;
 
 import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.activation.DataHandler;
+import javax.activation.DataSource;
+import javax.activation.FileDataSource;
 import javax.mail.Authenticator;
 import javax.mail.Message;
 import javax.mail.MessagingException;
+import javax.mail.Multipart;
+import javax.mail.Part;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 import javax.swing.JOptionPane;
 
 
@@ -28,12 +37,11 @@ import javax.swing.JOptionPane;
 public class Email {
 
     public void sendEmail(int t, String email) {
-        this.email(t,email);
+        this.email(t, email);
     }
 
-  
     private static void email(int t, String email) {
-  
+
         final String SSL_FACTORY = "javax.net.ssl.SSLSocketFactory";
         // Get a Properties object
         Properties props = System.getProperties();
@@ -67,6 +75,7 @@ public class Email {
             msg.setSubject("TOKEN FINTECHONOLIGAS D++");
             msg.setText(String.valueOf(t));
             msg.setSentDate(new Date());
+
             Transport.send(msg);
             System.out.println("Sucesso!");
         } catch (MessagingException e) {
@@ -74,31 +83,52 @@ public class Email {
         }
     }
 
-/*
-    public void salvar{
-    new Email().sendEmail(token, emailField.getText());
-        int inToken = Integer.valueOf(JOptionPane.showInputDialog(this, "Insira o TOKEN enviado para "
-                + emailField.getText() + ":", "Antes de continuarmos!", JOptionPane.INFORMATION_MESSAGE));
-
-        if (token == inToken) {
-
-            u = new Usuarios();
-
-            u.setToken(String.valueOf(token));
-            u.setEmail(emailField.getText());
-            u.setNome(nomeField.getText());
-            u.setSenha(senhaField.getText());
-            u.setUser(userField.getText());
-
-            entityManager.persist(u);
-            entityManager.getTransaction().commit();
-
+    public void sendAttachEmail(String to, String subject, String body, String attach) {
+        Properties p = getProps();
+        Authenticator auth = new SMTPAuthenticator();
+        Session session = Session.getInstance(p, auth);
+        MimeMessage msg = new MimeMessage(session);
+        MimeBodyPart mbp = new MimeBodyPart();
+        try {
+            // "de" e "para"!!
+            msg.setFrom(new InternetAddress("tallysprado@alu.ufc.br"));
             
-
-        } else {
-            JOptionPane.showMessageDialog(this, "Token Incorreto!");
+            msg.setRecipients(Message.RecipientType.TO, to);
+            msg.setSentDate(new Date());
+            msg.setSubject(subject);
+            msg.setText(body);
+            //enviando anexo
+            DataSource fds = new FileDataSource(attach);
+            mbp.setDisposition(Part.ATTACHMENT);
+            mbp.setDataHandler(new DataHandler(fds));
+            mbp.setFileName(fds.getName());
+            Multipart mp = new MimeMultipart();
+            mp.addBodyPart(mbp);
+            msg.setContent(mp);
+            // enviando mensagem
+            Transport.send(msg);
+        } catch (AddressException e) {
+            e.printStackTrace();
+        } catch (MessagingException e) {
+            e.printStackTrace();
         }
-}  
-*/
+        System.out.println("Enviado com sucesso!");
+    }
+
+    private static Properties getProps() {
+        Properties p = new Properties();
+        p.put("mail.transport.protocol", "smtp");
+        p.put("mail.smtp.starttls.enable", "true");
+        p.put("mail.smtp.host", "smtp.gmail.com");
+        p.put("mail.smtp.auth", "true");
+        return p;
+    }
+}
+
+class SMTPAuthenticator extends javax.mail.Authenticator {
+
+    public PasswordAuthentication getPasswordAuthentication() {
+        return new PasswordAuthentication("tallysprado@alu.ufc.br", "SiliconValley!123");
+    }
 
 }

@@ -5,8 +5,6 @@
  */
 package pagamentos.model;
 
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -19,7 +17,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -32,11 +29,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "Pagamentos.findAll", query = "SELECT p FROM Pagamentos p")
     , @NamedQuery(name = "Pagamentos.findByIdPagamentos", query = "SELECT p FROM Pagamentos p WHERE p.idPagamentos = :idPagamentos")
+    , @NamedQuery(name = "Pagamentos.findByBeneficiario", query = "SELECT p FROM Pagamentos p WHERE p.beneficiario = :beneficiario")
+    , @NamedQuery(name = "Pagamentos.findByValor", query = "SELECT p FROM Pagamentos p WHERE p.valor = :valor")
     , @NamedQuery(name = "Pagamentos.findByDataPagamento", query = "SELECT p FROM Pagamentos p WHERE p.dataPagamento = :dataPagamento")})
 public class Pagamentos implements Serializable {
-
-    @Transient
-    private PropertyChangeSupport changeSupport = new PropertyChangeSupport(this);
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -44,6 +40,10 @@ public class Pagamentos implements Serializable {
     @Basic(optional = false)
     @Column(name = "IdPagamentos")
     private Integer idPagamentos;
+    @Column(name = "Beneficiario")
+    private String beneficiario;
+    @Column(name = "Valor")
+    private String valor;
     @Column(name = "DataPagamento")
     private String dataPagamento;
     @JoinColumn(name = "codBoleto", referencedColumnName = "codBoleto")
@@ -65,9 +65,23 @@ public class Pagamentos implements Serializable {
     }
 
     public void setIdPagamentos(Integer idPagamentos) {
-        Integer oldIdPagamentos = this.idPagamentos;
         this.idPagamentos = idPagamentos;
-        changeSupport.firePropertyChange("idPagamentos", oldIdPagamentos, idPagamentos);
+    }
+
+    public String getBeneficiario() {
+        return beneficiario;
+    }
+
+    public void setBeneficiario(String beneficiario) {
+        this.beneficiario = beneficiario;
+    }
+
+    public String getValor() {
+        return valor;
+    }
+
+    public void setValor(String valor) {
+        this.valor = valor;
     }
 
     public String getDataPagamento() {
@@ -75,9 +89,7 @@ public class Pagamentos implements Serializable {
     }
 
     public void setDataPagamento(String dataPagamento) {
-        String oldDataPagamento = this.dataPagamento;
         this.dataPagamento = dataPagamento;
-        changeSupport.firePropertyChange("dataPagamento", oldDataPagamento, dataPagamento);
     }
 
     public Boleto getCodBoleto() {
@@ -85,9 +97,7 @@ public class Pagamentos implements Serializable {
     }
 
     public void setCodBoleto(Boleto codBoleto) {
-        Boleto oldCodBoleto = this.codBoleto;
         this.codBoleto = codBoleto;
-        changeSupport.firePropertyChange("codBoleto", oldCodBoleto, codBoleto);
     }
 
     public Cliente getIdCliente() {
@@ -95,9 +105,7 @@ public class Pagamentos implements Serializable {
     }
 
     public void setIdCliente(Cliente idCliente) {
-        Cliente oldIdCliente = this.idCliente;
         this.idCliente = idCliente;
-        changeSupport.firePropertyChange("idCliente", oldIdCliente, idCliente);
     }
 
     @Override
@@ -123,14 +131,6 @@ public class Pagamentos implements Serializable {
     @Override
     public String toString() {
         return "pagamentos.model.Pagamentos[ idPagamentos=" + idPagamentos + " ]";
-    }
-
-    public void addPropertyChangeListener(PropertyChangeListener listener) {
-        changeSupport.addPropertyChangeListener(listener);
-    }
-
-    public void removePropertyChangeListener(PropertyChangeListener listener) {
-        changeSupport.removePropertyChangeListener(listener);
     }
     
 }

@@ -55,6 +55,9 @@ public class Consulta extends JPanel {
         refreshButton = new javax.swing.JButton();
         newButton = new javax.swing.JButton();
         deleteButton = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        jTextField1 = new javax.swing.JTextField();
+        jButton1 = new javax.swing.JButton();
 
         FormListener formListener = new FormListener();
 
@@ -134,38 +137,50 @@ public class Consulta extends JPanel {
 
         deleteButton.addActionListener(formListener);
 
+        jLabel1.setText("Nome Cliente:");
+
+        jTextField1.addActionListener(formListener);
+
+        jButton1.setText("Buscar");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(newButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(deleteButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(refreshButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(saveButton))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 556, Short.MAX_VALUE)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(idClienteLabel)
                                     .addComponent(nomeLabel)
                                     .addComponent(emailLabel)
                                     .addComponent(userLabel)
-                                    .addComponent(telefoneLabel))
+                                    .addComponent(telefoneLabel)
+                                    .addComponent(jLabel1))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(idClienteField, javax.swing.GroupLayout.DEFAULT_SIZE, 487, Short.MAX_VALUE)
-                                    .addComponent(nomeField, javax.swing.GroupLayout.DEFAULT_SIZE, 487, Short.MAX_VALUE)
-                                    .addComponent(emailField, javax.swing.GroupLayout.DEFAULT_SIZE, 487, Short.MAX_VALUE)
-                                    .addComponent(userField, javax.swing.GroupLayout.DEFAULT_SIZE, 487, Short.MAX_VALUE)
-                                    .addComponent(telefoneField, javax.swing.GroupLayout.DEFAULT_SIZE, 487, Short.MAX_VALUE)))
-                            .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 556, Short.MAX_VALUE))))
+                                    .addComponent(idClienteField, javax.swing.GroupLayout.DEFAULT_SIZE, 464, Short.MAX_VALUE)
+                                    .addComponent(nomeField, javax.swing.GroupLayout.DEFAULT_SIZE, 464, Short.MAX_VALUE)
+                                    .addComponent(emailField, javax.swing.GroupLayout.DEFAULT_SIZE, 464, Short.MAX_VALUE)
+                                    .addComponent(userField, javax.swing.GroupLayout.DEFAULT_SIZE, 464, Short.MAX_VALUE)
+                                    .addComponent(telefoneField, javax.swing.GroupLayout.DEFAULT_SIZE, 464, Short.MAX_VALUE)
+                                    .addComponent(jTextField1)))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(newButton)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(deleteButton)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(refreshButton)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(saveButton))
+                            .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING))))
                 .addContainerGap())
         );
 
@@ -175,8 +190,14 @@ public class Consulta extends JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(masterScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(39, 39, 39)
+                .addComponent(jButton1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 86, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(idClienteLabel)
                     .addComponent(idClienteField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -224,6 +245,9 @@ public class Consulta extends JPanel {
             }
             else if (evt.getSource() == deleteButton) {
                 Consulta.this.deleteButtonActionPerformed(evt);
+            }
+            else if (evt.getSource() == jTextField1) {
+                Consulta.this.jTextField1ActionPerformed(evt);
             }
         }
     }// </editor-fold>//GEN-END:initComponents
@@ -277,6 +301,10 @@ public class Consulta extends JPanel {
         }
     }//GEN-LAST:event_saveButtonActionPerformed
 
+    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField1ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton deleteButton;
@@ -285,6 +313,9 @@ public class Consulta extends JPanel {
     private javax.persistence.EntityManager entityManager;
     private javax.swing.JTextField idClienteField;
     private javax.swing.JLabel idClienteLabel;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JTextField jTextField1;
     private java.util.List<pagamentos.model.Cliente> list;
     private javax.swing.JScrollPane masterScrollPane;
     private javax.swing.JTable masterTable;

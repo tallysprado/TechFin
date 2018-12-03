@@ -6,7 +6,9 @@
 package principal.view;
 
 import javax.swing.JPanel;
+import pagamentos.model.Cliente;
 import pagamentos.view.Consulta;
+import pagamentos.view.ConsultaForm;
 import pagamentos.view.TransacaoForm;
 
 /**
@@ -18,9 +20,12 @@ public class Principal extends javax.swing.JFrame {
     /**
      * Creates new form Principal
      */
-    public Principal() {
+    
+    Cliente u;
+    public Principal(Cliente u) {
         initComponents();
         this.setLocationRelativeTo(null);
+        this.u = u;
     }
 
     /**
@@ -98,7 +103,7 @@ public class Principal extends javax.swing.JFrame {
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
         // TODO add your handling code here:
         tabConsulta = new JPanel();
-        tabConsulta.add(new Consulta());
+        tabConsulta.add(new ConsultaForm(u));
         
         tabPane.addTab("Consulta de Clientes e Transações", tabConsulta);
     }//GEN-LAST:event_jMenuItem2ActionPerformed
@@ -133,10 +138,15 @@ public class Principal extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Principal().setVisible(true);
+                //new Principal(nome).setVisible(true);
+                
                 
             }
         });
+    }
+    public void run(){
+        new Principal(u).setVisible(true);
+        
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

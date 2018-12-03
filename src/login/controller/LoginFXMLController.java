@@ -107,8 +107,8 @@ public class LoginFXMLController implements Initializable {
                 
                 Stage stage = (Stage) usuarioField.getScene().getWindow();
                 stage.close();
-                Principal p = new Principal();
-                p.setVisible(true);
+                Principal p = new Principal(u);
+                p.run();
                 break;
             }
         }

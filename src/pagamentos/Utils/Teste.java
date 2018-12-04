@@ -1,8 +1,3 @@
- /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package pagamentos.Utils;
 
 import br.com.caelum.stella.boleto.Banco;
@@ -13,35 +8,17 @@ import br.com.caelum.stella.boleto.Endereco;
 import br.com.caelum.stella.boleto.Pagador;
 import br.com.caelum.stella.boleto.bancos.BancoDoBrasil;
 import br.com.caelum.stella.boleto.transformer.GeradorDeBoleto;
-import br.com.caelum.stella.boleto.transformer.GeradorDeBoletoHTML;
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import login.Email;
 
-/**
- *
- * @author root
- */
-public class GerarBoleto {
-    
-    public void geraBoleto(String endBen, String nomeBen, String nBol, String endPag, String nomePag,
-            String agencia, String dig, String cpfPag, String valor){
-       
+public class Teste {  
+    public static void main(String[] args) {  
         Datas datas = Datas.novasDatas()
                 .comDocumento(1, 5, 2008)
                 .comProcessamento(1, 5, 2008)
                 .comVencimento(2, 5, 2008);  
 
         Endereco enderecoBeneficiario = Endereco.novoEndereco()
-        		.comLogradouro(endBen)  
+        		.comLogradouro("Av das Empresas, 555")  
         		.comBairro("Bairro Grande")  
         		.comCep("01234-555")  
         		.comCidade("São Paulo")  
@@ -49,17 +26,17 @@ public class GerarBoleto {
 
         //Quem emite o boleto
         Beneficiario beneficiario = Beneficiario.novoBeneficiario()  
-                .comNomeBeneficiario(nomeBen)  
-                .comAgencia(agencia).comDigitoAgencia(dig)  
+                .comNomeBeneficiario("Fulano de Tal")  
+                .comAgencia("1824").comDigitoAgencia("4")  
                 .comCodigoBeneficiario("76000")  
                 .comDigitoCodigoBeneficiario("5")  
                 .comNumeroConvenio("1207113")  
                 .comCarteira("18")  
                 .comEndereco(enderecoBeneficiario)
-                .comNossoNumero(nBol);  
+                .comNossoNumero("9000206");  
 
         Endereco enderecoPagador = Endereco.novoEndereco()
-        		.comLogradouro(endPag)  
+        		.comLogradouro("Av dos testes, 111 apto 333")  
         		.comBairro("Bairro Teste")  
         		.comCep("01234-111")  
         		.comCidade("São Paulo")  
@@ -67,8 +44,8 @@ public class GerarBoleto {
         
         //Quem paga o boleto
         Pagador pagador = Pagador.novoPagador()  
-                .comNome(nomePag)  
-                .comDocumento(cpfPag)
+                .comNome("Fulano da Silva")  
+                .comDocumento("111.222.333-12")
                 .comEndereco(enderecoPagador);
 
         Banco banco = new BancoDoBrasil();  
@@ -78,7 +55,7 @@ public class GerarBoleto {
                 .comDatas(datas)  
                 .comBeneficiario(beneficiario)  
                 .comPagador(pagador)  
-                .comValorBoleto(valor)  
+                .comValorBoleto("200.00")  
                 .comNumeroDoDocumento("1234")  
                 .comInstrucoes("instrucao 1", "instrucao 2", "instrucao 3", "instrucao 4", "instrucao 5")  
                 .comLocaisDePagamento("local 1", "local 2");  
@@ -99,8 +76,5 @@ public class GerarBoleto {
         
         File arquivo = new File("/home/tallys/teste/TechFin/src/pagamentos/Utils/Boleto.pdf");
         gerador.geraPDF(arquivo);
-        
-        
-        
-    }  
+    }
 }

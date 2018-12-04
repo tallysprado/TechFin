@@ -333,8 +333,6 @@ public class TransacaoForm extends JPanel {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 
         // TODO add your handling code here:
-        GerarBoleto gBoleto = new GerarBoleto();
-
         try {
 
             String myDriver = "com.mysql.jdbc.Driver";
@@ -342,37 +340,49 @@ public class TransacaoForm extends JPanel {
             Class.forName(myDriver);
             Connection conn = DriverManager.getConnection(myUrl, "tallys", "teste");
 
-            String search = "SELECT * FROM Cliente WHERE User='" + beneficiarioField.getText() + "'";
-            String search2 = "SELECT * FROM Cliente WHERE User='" + pagadorField.getText() + "'";
+            //String search = "SELECT * FROM Cliente WHERE User='" + beneficiarioField.getText() + "'";
+            String search2 = "SELECT * FROM Cliente WHERE User='" + beneficiarioField.getText() + "'";
 
             Statement st = (Statement) conn.createStatement();
 
             String email = null, endBen = null, nomeBen = null, nBol = null, endPag = null, nomePag = null, agencia, digito, cpfPag = null, valor;
             ResultSet rs2 = st.executeQuery(search2);
             while (rs2.next()) {
-                endBen = rs2.getString("Endereco");
-                nomeBen = rs2.getString("Nome");
-                cpfPag = rs2.getString("CPF");
-                nBol = rs2.getString("Id_Cliente");
+                endPag = rs2.getString("Endereco");
+                nomePag = rs2.getString("Nome");
+                email = rs2.getString("Email");
+                
+                       
             }
             PreparedStatement preparedStmt2 = (PreparedStatement) conn.prepareStatement(search2);
+            
+            
             preparedStmt2.execute();
 
-            ResultSet rs = st.executeQuery(search);
+            /*ResultSet rs = st.executeQuery(search);
             while (rs.next()) {
-                endPag = rs.getString("Endereco");
-                nomePag = rs.getString("Nome");
-                email = rs.getString("Email");
+                endBen = rs.getString("Endereco");
+                nomeBen = rs.getString("Nome");
+                cpfPag = rs.getString("CPF");
+                nBol = rs.getString("Id_Cliente");
+                
             }
+            
             PreparedStatement preparedStmt1 = (PreparedStatement) conn.prepareStatement(search);
             preparedStmt1.execute();
+            */
+            endBen = c.getEndereco();
+            nomeBen = c.getNome();
+            cpfPag = c.getCpf();
+            nBol = String.valueOf(c.getIdCliente());
             agencia = "30.361";
             digito = "5";
             valor = valorTransacaoField.getText();
-
+            GerarBoleto gBoleto = new GerarBoleto();
             gBoleto.geraBoleto(endBen, nomeBen, nBol, endPag, nomePag, agencia, digito, cpfPag, valor);
+            //GerarBoleto.geraBoleto("teste", "teste", "teste", "teste", "teste", "teste", "teste", "teste", "200");
             Thread.sleep(2000);
-            new Email().sendAttachEmail(email, "Você tem uma nova cobrança! - TechFin", "Pague ao " + nomeBen + " agora!", "Boleto.pdf");
+            new Email().sendAttachEmail(email, "Você tem uma nova cobrança! - TechFin", "Pague ao " + nomeBen + " agora!", "/home/tallys/teste/TechFin/src/pagamentos/Utils/Boleto.pdf");
 
         } catch (SQLException ex) {
             Logger.getLogger(TransacaoForm.class.getName()).log(Level.SEVERE, null, ex);

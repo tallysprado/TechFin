@@ -55,11 +55,12 @@ public class Gastos extends javax.swing.JPanel {
             ResultSet rs = st.executeQuery(search);
             
             DefaultCategoryDataset ds = new DefaultCategoryDataset();
-            ArrayList<Double> saldoList = new ArrayList<Double>();
+            ArrayList<Double> transacaoList = new ArrayList<Double>();
+            
             while (rs.next()) {
                 System.out.println(rs.getDouble("ValorTransacao"));
-                saldoList.add(rs.getDouble("ValorTransacao"));
-
+                transacaoList.add(rs.getDouble("ValorTransacao"));
+                
             }
 
             String search2 = "SELECT DataTransacao FROM Transacao NATURAL JOIN Cliente_tem_Transacao WHERE Cliente_tem_Transacao.Id_Cliente='" + u.getIdCliente() + "'";
@@ -73,8 +74,25 @@ public class Gastos extends javax.swing.JPanel {
                 dataList.add(rs2.getString("DataTransacao"));
             }
             
-            for (int i = 0; i < saldoList.size(); i++) {
-                ds.addValue(saldoList.get(i), "Máximo", dataList.get(i));
+            String searchGasto = "SELECT ValorTransacao FROM Transacao NATURAL RIGHT JOIN Cliente_tem_Transacao WHERE Cliente_tem_Transacao.Id_Cliente='" + u.getIdCliente() + "'";
+            Statement st4 = conn.createStatement();
+            ResultSet rs4 = st4.executeQuery(searchGasto);
+            ArrayList<Double> gastoList = new ArrayList<Double>();
+            while(rs4.next()){
+                gastoList.add(rs4.getDouble("ValorTransacao"));
+            }
+            
+            String searchData = "SELECT DataTransacao FROM Transacao NATURAL RIGHT JOIN Cliente_tem_Transacao WHERE Cliente_tem_Transacao.Id_Cliente='" + u.getIdCliente() + "'";
+            Statement st5 = conn.createStatement();
+            ResultSet rs5 = st5.executeQuery(searchData);
+            ArrayList<String> data2List = new ArrayList<String>();
+            while(rs5.next()){
+                data2List.add(rs5.getString("DataTransacao"));
+            }
+            
+            for (int i = 0; i < transacaoList.size(); i++) {
+                ds.addValue(transacaoList.get(i), "Ganhos", dataList.get(i));
+                ds.addValue(gastoList.get(i), "Gastos", dataList.get(i));
             }
 
             JFreeChart grafico = ChartFactory.createLineChart("Meu Grafico", "Dia", "Valor", ds, PlotOrientation.VERTICAL, true,true,false);

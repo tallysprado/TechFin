@@ -11,38 +11,51 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.RollbackException;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import login.Email;
 import pagamentos.model.Cliente;
+import pagamentos.Utils.GerarBoleto;
+import static pagamentos.view.ConsultaForm.buildTableModel;
 
 /**
  *
  * @author root
  */
 public class TransacaoForm extends JPanel {
-    
+
     public TransacaoForm() {
         initComponents();
         if (!Beans.isDesignTime()) {
             entityManager.getTransaction().begin();
         }
-        
+
     }
     String u;
-    public void setField(String u){
+    Cliente c;
+
+    public void setCliente(Cliente c) {
+        this.c = c;
+    }
+
+    public void setField(String u) {
         this.u = u;
         System.out.println(u);
         pagadorField.setText(u);
         pagadorField.setEditable(false);
     }
+
     public void novoPagamento(String usuario, int codTrans) {
         int idCli = 0;
         try {
-            
+
             String myDriver = "com.mysql.jdbc.Driver";
             String myUrl = "jdbc:mysql://127.0.0.1/db";
             Class.forName(myDriver);
@@ -56,14 +69,11 @@ public class TransacaoForm extends JPanel {
                 idCli = rs.getInt("Id_Cliente");
             }
 
-            
             String query = "INSERT INTO Cliente_tem_Transacao (Id_Cliente, codTransacao) VALUES (?,?)";
-            
-            
+
             PreparedStatement preparedStmt = (PreparedStatement) conn.prepareStatement(query);
             preparedStmt.setInt(1, idCli);
             preparedStmt.setInt(2, codTrans);
-
 
             preparedStmt.execute();
 
@@ -101,6 +111,7 @@ public class TransacaoForm extends JPanel {
         refreshButton = new javax.swing.JButton();
         newButton = new javax.swing.JButton();
         deleteButton = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
 
         FormListener formListener = new FormListener();
 
@@ -144,35 +155,43 @@ public class TransacaoForm extends JPanel {
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), beneficiarioField, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
 
+        beneficiarioField.addActionListener(formListener);
+
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.valorTransacao}"), valorTransacaoField, org.jdesktop.beansbinding.BeanProperty.create("text"));
         binding.setSourceUnreadableValue("null");
         bindingGroup.addBinding(binding);
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), valorTransacaoField, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
 
-        saveButton.setText("Save");
+        saveButton.setText("Salvar");
         saveButton.addActionListener(formListener);
 
-        refreshButton.setText("Refresh");
+        refreshButton.setText("Atualizar");
         refreshButton.addActionListener(formListener);
 
-        newButton.setText("New");
+        newButton.setText("Novo");
         newButton.addActionListener(formListener);
 
-        deleteButton.setText("Delete");
+        deleteButton.setText("Deletar");
 
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), deleteButton, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
 
         deleteButton.addActionListener(formListener);
 
+        jButton1.setText("Gerar Boleto");
+        jButton1.addActionListener(formListener);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jButton1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(newButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(deleteButton)
@@ -181,21 +200,18 @@ public class TransacaoForm extends JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(saveButton))
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(codTransacaoLabel)
-                                    .addComponent(pagadorLabel)
-                                    .addComponent(beneficiarioLabel)
-                                    .addComponent(valorTransacaoLabel))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(codTransacaoField, javax.swing.GroupLayout.DEFAULT_SIZE, 315, Short.MAX_VALUE)
-                                    .addComponent(pagadorField, javax.swing.GroupLayout.DEFAULT_SIZE, 315, Short.MAX_VALUE)
-                                    .addComponent(beneficiarioField, javax.swing.GroupLayout.DEFAULT_SIZE, 315, Short.MAX_VALUE)
-                                    .addComponent(valorTransacaoField, javax.swing.GroupLayout.DEFAULT_SIZE, 315, Short.MAX_VALUE)))
-                            .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE))))
+                            .addComponent(codTransacaoLabel)
+                            .addComponent(pagadorLabel)
+                            .addComponent(beneficiarioLabel)
+                            .addComponent(valorTransacaoLabel))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(codTransacaoField, javax.swing.GroupLayout.DEFAULT_SIZE, 531, Short.MAX_VALUE)
+                            .addComponent(pagadorField, javax.swing.GroupLayout.DEFAULT_SIZE, 531, Short.MAX_VALUE)
+                            .addComponent(beneficiarioField, javax.swing.GroupLayout.DEFAULT_SIZE, 531, Short.MAX_VALUE)
+                            .addComponent(valorTransacaoField, javax.swing.GroupLayout.DEFAULT_SIZE, 531, Short.MAX_VALUE)))
+                    .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 640, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -205,7 +221,7 @@ public class TransacaoForm extends JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)
+                .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 132, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(codTransacaoLabel)
@@ -227,7 +243,8 @@ public class TransacaoForm extends JPanel {
                     .addComponent(saveButton)
                     .addComponent(refreshButton)
                     .addComponent(deleteButton)
-                    .addComponent(newButton))
+                    .addComponent(newButton)
+                    .addComponent(jButton1))
                 .addContainerGap())
         );
 
@@ -251,10 +268,15 @@ public class TransacaoForm extends JPanel {
             else if (evt.getSource() == deleteButton) {
                 TransacaoForm.this.deleteButtonActionPerformed(evt);
             }
+            else if (evt.getSource() == jButton1) {
+                TransacaoForm.this.jButton1ActionPerformed(evt);
+            }
+            else if (evt.getSource() == beneficiarioField) {
+                TransacaoForm.this.beneficiarioFieldActionPerformed(evt);
+            }
         }
     }// </editor-fold>//GEN-END:initComponents
 
-    
     @SuppressWarnings("unchecked")
     private void refreshButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshButtonActionPerformed
         entityManager.getTransaction().rollback();
@@ -263,7 +285,7 @@ public class TransacaoForm extends JPanel {
         for (Object entity : data) {
             entityManager.refresh(entity);
         }
-        novoPagamento(beneficiarioField.getText(), list.get(list.size()-1).getCodTransacao());
+        novoPagamento(beneficiarioField.getText(), list.get(list.size() - 1).getCodTransacao());
         list.clear();
         list.addAll(data);
     }//GEN-LAST:event_refreshButtonActionPerformed
@@ -288,7 +310,7 @@ public class TransacaoForm extends JPanel {
         masterTable.setRowSelectionInterval(row, row);
         masterTable.scrollRectToVisible(masterTable.getCellRect(row, 0, true));
     }//GEN-LAST:event_newButtonActionPerformed
-    
+
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
         try {
             entityManager.getTransaction().commit();
@@ -297,16 +319,74 @@ public class TransacaoForm extends JPanel {
             rex.printStackTrace();
             entityManager.getTransaction().begin();
             List<pagamentos.model.Transacao> merged = new ArrayList<pagamentos.model.Transacao>(list.size());
-            
+
             for (pagamentos.model.Transacao t : list) {
-                
+
                 merged.add(entityManager.merge(t));
             }
-            
+
             list.clear();
             list.addAll(merged);
         }
     }//GEN-LAST:event_saveButtonActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+
+        // TODO add your handling code here:
+        GerarBoleto gBoleto = new GerarBoleto();
+
+        try {
+
+            String myDriver = "com.mysql.jdbc.Driver";
+            String myUrl = "jdbc:mysql://127.0.0.1/db";
+            Class.forName(myDriver);
+            Connection conn = DriverManager.getConnection(myUrl, "tallys", "teste");
+
+            String search = "SELECT * FROM Cliente WHERE User='" + beneficiarioField.getText() + "'";
+            String search2 = "SELECT * FROM Cliente WHERE User='" + pagadorField.getText() + "'";
+
+            Statement st = (Statement) conn.createStatement();
+
+            String email = null, endBen = null, nomeBen = null, nBol = null, endPag = null, nomePag = null, agencia, digito, cpfPag = null, valor;
+            ResultSet rs2 = st.executeQuery(search2);
+            while (rs2.next()) {
+                endBen = rs2.getString("Endereco");
+                nomeBen = rs2.getString("Nome");
+                cpfPag = rs2.getString("CPF");
+                nBol = rs2.getString("Id_Cliente");
+            }
+            PreparedStatement preparedStmt2 = (PreparedStatement) conn.prepareStatement(search2);
+            preparedStmt2.execute();
+
+            ResultSet rs = st.executeQuery(search);
+            while (rs.next()) {
+                endPag = rs.getString("Endereco");
+                nomePag = rs.getString("Nome");
+                email = rs.getString("Email");
+            }
+            PreparedStatement preparedStmt1 = (PreparedStatement) conn.prepareStatement(search);
+            preparedStmt1.execute();
+            agencia = "30.361";
+            digito = "5";
+            valor = valorTransacaoField.getText();
+
+            gBoleto.geraBoleto(endBen, nomeBen, nBol, endPag, nomePag, agencia, digito, cpfPag, valor);
+            Thread.sleep(2000);
+            new Email().sendAttachEmail(email, "Você tem uma nova cobrança! - TechFin", "Pague ao " + nomeBen + " agora!", "Boleto.pdf");
+
+        } catch (SQLException ex) {
+            Logger.getLogger(TransacaoForm.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(TransacaoForm.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(TransacaoForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void beneficiarioFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_beneficiarioFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_beneficiarioFieldActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -316,6 +396,7 @@ public class TransacaoForm extends JPanel {
     private javax.swing.JLabel codTransacaoLabel;
     private javax.swing.JButton deleteButton;
     private javax.persistence.EntityManager entityManager;
+    private javax.swing.JButton jButton1;
     private java.util.List<pagamentos.model.Transacao> list;
     private javax.swing.JScrollPane masterScrollPane;
     private javax.swing.JTable masterTable;
@@ -340,16 +421,24 @@ public class TransacaoForm extends JPanel {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
+
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(TransacaoForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TransacaoForm.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(TransacaoForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TransacaoForm.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(TransacaoForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TransacaoForm.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(TransacaoForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(TransacaoForm.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
@@ -364,5 +453,5 @@ public class TransacaoForm extends JPanel {
             }
         });
     }
-    
+
 }

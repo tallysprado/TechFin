@@ -193,6 +193,9 @@
       <BindingProperties>
         <BindingProperty name="enabled" source="masterTable" sourcePath="${selectedElement != null}" target="pagadorField" targetPath="enabled" updateStrategy="1" immediately="false"/>
       </BindingProperties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="pagadorFieldActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="beneficiarioField">
       <BindingProperties>

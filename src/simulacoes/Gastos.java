@@ -5,6 +5,16 @@
  */
 package simulacoes;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.jfree.data.category.DefaultCategoryDataset;
+
 /**
  *
  * @author root
@@ -76,8 +86,45 @@ public class Gastos extends javax.swing.JFrame {
                 new Gastos().setVisible(true);
             }
         });
-    }
+
+        try {
+
+            String myDriver = "com.mysql.jdbc.Driver";
+            String myUrl = "jdbc:mysql://127.0.0.1/db";
+            Class.forName(myDriver);
+            Connection conn = DriverManager.getConnection(myUrl, "tallys", "teste");
+
+            //String search = "SELECT * FROM Cliente WHERE User='" + beneficiarioField.getText() + "'";
+            String search2 = "SELECT * FROM Cliente WHERE User='" + "" + "'";
+
+            Statement st = (Statement) conn.createStatement();
+
+            String email = null, endBen = null, nomeBen = null, nBol = null, endPag = null, nomePag = null, agencia, digito, cpfPag = null, valor;
+            ResultSet rs2 = st.executeQuery(search2);
+            
+            DefaultCategoryDataset ds = new DefaultCategoryDataset();
+            /*while (rs2.next()) {
+                ds.addValue(rs2.getString(""), "maximo", "dia 6");
+
+            }*/
+            PreparedStatement preparedStmt2 = (PreparedStatement) conn.prepareStatement(search2);
+
+            preparedStmt2.execute();
+
+            
+            ds.addValue(40.5, "maximo", "dia 1");
+            ds.addValue(38.2, "maximo", "dia 2");
+            ds.addValue(37.3, "maximo", "dia 3");
+            ds.addValue(31.5, "maximo", "dia 4");
+            ds.addValue(35.7, "maximo", "dia 5");
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(Gastos.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Gastos.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
+}
 }

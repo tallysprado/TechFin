@@ -7,22 +7,16 @@ package pagamentos.model;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -70,15 +64,6 @@ public class Cliente implements Serializable {
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "Saldo")
     private BigDecimal saldo;
-    @JoinTable(name = "Cliente_tem_Transacao", joinColumns = {
-        @JoinColumn(name = "Id_Cliente", referencedColumnName = "Id_Cliente")}, inverseJoinColumns = {
-        @JoinColumn(name = "codTransacao", referencedColumnName = "codTransacao")})
-    @ManyToMany
-    private Collection<Transacao> transacaoCollection;
-    @OneToMany(mappedBy = "idCliente")
-    private Collection<Pagamentos> pagamentosCollection;
-    @OneToMany(mappedBy = "idCliente")
-    private Collection<Boleto> boletoCollection;
 
     public Cliente() {
     }
@@ -165,33 +150,6 @@ public class Cliente implements Serializable {
 
     public void setSaldo(BigDecimal saldo) {
         this.saldo = saldo;
-    }
-
-    @XmlTransient
-    public Collection<Transacao> getTransacaoCollection() {
-        return transacaoCollection;
-    }
-
-    public void setTransacaoCollection(Collection<Transacao> transacaoCollection) {
-        this.transacaoCollection = transacaoCollection;
-    }
-
-    @XmlTransient
-    public Collection<Pagamentos> getPagamentosCollection() {
-        return pagamentosCollection;
-    }
-
-    public void setPagamentosCollection(Collection<Pagamentos> pagamentosCollection) {
-        this.pagamentosCollection = pagamentosCollection;
-    }
-
-    @XmlTransient
-    public Collection<Boleto> getBoletoCollection() {
-        return boletoCollection;
-    }
-
-    public void setBoletoCollection(Collection<Boleto> boletoCollection) {
-        this.boletoCollection = boletoCollection;
     }
 
     @Override

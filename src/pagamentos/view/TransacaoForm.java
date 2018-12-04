@@ -19,11 +19,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.RollbackException;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import login.Email;
 import pagamentos.model.Cliente;
 import pagamentos.Utils.GerarBoleto;
-import static pagamentos.view.ConsultaForm.buildTableModel;
 
 /**
  *
@@ -149,6 +149,8 @@ public class TransacaoForm extends JPanel {
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), pagadorField, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
 
+        pagadorField.addActionListener(formListener);
+
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.beneficiario}"), beneficiarioField, org.jdesktop.beansbinding.BeanProperty.create("text"));
         binding.setSourceUnreadableValue("null");
         bindingGroup.addBinding(binding);
@@ -256,7 +258,10 @@ public class TransacaoForm extends JPanel {
     private class FormListener implements java.awt.event.ActionListener {
         FormListener() {}
         public void actionPerformed(java.awt.event.ActionEvent evt) {
-            if (evt.getSource() == saveButton) {
+            if (evt.getSource() == beneficiarioField) {
+                TransacaoForm.this.beneficiarioFieldActionPerformed(evt);
+            }
+            else if (evt.getSource() == saveButton) {
                 TransacaoForm.this.saveButtonActionPerformed(evt);
             }
             else if (evt.getSource() == refreshButton) {
@@ -271,8 +276,8 @@ public class TransacaoForm extends JPanel {
             else if (evt.getSource() == jButton1) {
                 TransacaoForm.this.jButton1ActionPerformed(evt);
             }
-            else if (evt.getSource() == beneficiarioField) {
-                TransacaoForm.this.beneficiarioFieldActionPerformed(evt);
+            else if (evt.getSource() == pagadorField) {
+                TransacaoForm.this.pagadorFieldActionPerformed(evt);
             }
         }
     }// </editor-fold>//GEN-END:initComponents
@@ -313,6 +318,66 @@ public class TransacaoForm extends JPanel {
 
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
         try {
+
+            String myDriver = "com.mysql.jdbc.Driver";
+            String myUrl = "jdbc:mysql://127.0.0.1/db";
+            Class.forName(myDriver);
+            Connection conn = DriverManager.getConnection(myUrl, "tallys", "teste");
+
+            //String search = "SELECT * FROM Cliente WHERE User='" + beneficiarioField.getText() + "'";
+            String saldoPagador = "SELECT Saldo FROM Cliente WHERE User='" + pagadorField.getText() + "'";
+
+            Statement st = (Statement) conn.createStatement();
+            
+            ResultSet rs2 = st.executeQuery(saldoPagador);
+            double saldo = 0;
+            if(rs2.next()){
+            saldo = rs2.getDouble("Saldo");
+            }
+            double valor = Double.valueOf(valorTransacaoField.getText());
+            if (saldo <= valor) {
+                JOptionPane.showMessageDialog(this, "Saldo - Valor da Transferência = " + (saldo - valor), "Saldo insuficiente!", JOptionPane.OK_OPTION);
+                return;
+            }
+            //PreparedStatement preparedStmt2 = (PreparedStatement) conn.prepareStatement(saldoPagador);
+            //preparedStmt2.execute();
+            
+            
+            
+            
+            String atualizaPagador = "UPDATE Cliente SET saldo = ? WHERE User = ?";
+            
+            PreparedStatement s2 = (PreparedStatement) conn.prepareStatement(atualizaPagador);
+            s2.setDouble(1, (saldo-valor));
+            s2.setString(2, pagadorField.getText());
+            
+            s2.execute();
+            
+            
+            String saldoBeneficiario = "SELECT Saldo FROM Cliente WHERE User='" + beneficiarioField.getText() + "'";
+            Statement st2 = (Statement) conn.createStatement();
+            
+            ResultSet rs1 = st2.executeQuery(saldoBeneficiario);
+            double saldoFinal = 0;
+            if(rs1.next()){
+            saldoFinal = rs1.getDouble("Saldo") + valor;
+            }
+            
+            String atualizaBeneficiario = "UPDATE Cliente SET Saldo = ? WHERE User = ?";
+            PreparedStatement s3 = conn.prepareStatement(atualizaBeneficiario);
+            s3.setDouble(1, saldoFinal);
+            s3.setString(2, beneficiarioField.getText());
+            s3.execute();
+            
+            
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(TransacaoForm.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(TransacaoForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        try {
             entityManager.getTransaction().commit();
             entityManager.getTransaction().begin();
         } catch (RollbackException rex) {
@@ -328,6 +393,8 @@ public class TransacaoForm extends JPanel {
             list.clear();
             list.addAll(merged);
         }
+
+
     }//GEN-LAST:event_saveButtonActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -351,12 +418,10 @@ public class TransacaoForm extends JPanel {
                 endPag = rs2.getString("Endereco");
                 nomePag = rs2.getString("Nome");
                 email = rs2.getString("Email");
-                
-                       
+
             }
             PreparedStatement preparedStmt2 = (PreparedStatement) conn.prepareStatement(search2);
-            
-            
+
             preparedStmt2.execute();
 
             /*ResultSet rs = st.executeQuery(search);
@@ -370,7 +435,7 @@ public class TransacaoForm extends JPanel {
             
             PreparedStatement preparedStmt1 = (PreparedStatement) conn.prepareStatement(search);
             preparedStmt1.execute();
-            */
+             */
             endBen = c.getEndereco();
             nomeBen = c.getNome();
             cpfPag = c.getCpf();
@@ -397,6 +462,10 @@ public class TransacaoForm extends JPanel {
     private void beneficiarioFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_beneficiarioFieldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_beneficiarioFieldActionPerformed
+
+    private void pagadorFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pagadorFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_pagadorFieldActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

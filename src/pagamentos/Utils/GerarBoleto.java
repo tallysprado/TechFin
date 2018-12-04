@@ -35,11 +35,14 @@ public class GerarBoleto {
     public void geraBoleto(String endBen, String nomeBen, String nBol, String endPag, String nomePag,
             String agencia, String dig, String cpfPag, String valor){
        
+        
+        Date data = new Date();
+        
         Datas datas = Datas.novasDatas()
                 .comDocumento(1, 5, 2008)
                 .comProcessamento(1, 5, 2008)
                 .comVencimento(2, 5, 2008);  
-
+                
         Endereco enderecoBeneficiario = Endereco.novoEndereco()
         		.comLogradouro(endBen)  
         		.comBairro("Bairro Grande")  

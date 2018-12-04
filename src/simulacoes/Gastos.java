@@ -5,27 +5,90 @@
  */
 package simulacoes;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartUtilities;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
+import pagamentos.model.Cliente;
 
 /**
  *
  * @author root
  */
-public class Gastos extends javax.swing.JFrame {
+public class Gastos extends javax.swing.JPanel {
 
     /**
      * Creates new form Gastos
      */
-    public Gastos() {
+    Cliente u;
+    public Gastos(Cliente u) {
         initComponents();
+        this.u = u;
+        grafico();
+    }
+    public void grafico() {
+     
+        try {
+
+            String myDriver = "com.mysql.jdbc.Driver";
+            String myUrl = "jdbc:mysql://127.0.0.1/db";
+            Class.forName(myDriver);
+            Connection conn = DriverManager.getConnection(myUrl, "tallys", "teste");
+
+            //String search = "SELECT * FROM Cliente WHERE User='" + beneficiarioField.getText() + "'";
+            String search = "SELECT ValorTransacao FROM Transacao NATURAL JOIN Cliente_tem_Transacao WHERE Cliente_tem_Transacao.Id_Cliente='" + u.getIdCliente() + "'";
+
+            Statement st = (Statement) conn.createStatement();
+
+            ResultSet rs = st.executeQuery(search);
+            
+            DefaultCategoryDataset ds = new DefaultCategoryDataset();
+            ArrayList<Double> saldoList = new ArrayList<Double>();
+            while (rs.next()) {
+                System.out.println(rs.getDouble("ValorTransacao"));
+                saldoList.add(rs.getDouble("ValorTransacao"));
+
+            }
+
+            String search2 = "SELECT DataTransacao FROM Transacao NATURAL JOIN Cliente_tem_Transacao WHERE Cliente_tem_Transacao.Id_Cliente='" + u.getIdCliente() + "'";
+            Statement st2 = conn.createStatement();
+            ResultSet rs2 = st2.executeQuery(search2);
+            
+            
+            ArrayList<String> dataList = new ArrayList<String>();
+            while (rs2.next()) {
+                System.out.println(rs2.getString("DataTransacao"));                
+                dataList.add(rs2.getString("DataTransacao"));
+            }
+            
+            for (int i = 0; i < saldoList.size(); i++) {
+                ds.addValue(saldoList.get(i), "Máximo", dataList.get(i));
+            }
+
+            JFreeChart grafico = ChartFactory.createLineChart("Meu Grafico", "Dia", "Valor", ds, PlotOrientation.VERTICAL, true,true,false);
+            OutputStream arquivo = new FileOutputStream("grafico.png");
+            ChartUtilities.writeChartAsPNG(arquivo, grafico, 550, 400);
+            arquivo.close();
+
+        } catch (SQLException ex) {
+            Logger.getLogger(Gastos.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Gastos.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(Gastos.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -37,10 +100,8 @@ public class Gastos extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 400, Short.MAX_VALUE)
@@ -49,82 +110,9 @@ public class Gastos extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 300, Short.MAX_VALUE)
         );
-
-        pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Gastos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Gastos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Gastos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Gastos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Gastos().setVisible(true);
-            }
-        });
-
-        try {
-
-            String myDriver = "com.mysql.jdbc.Driver";
-            String myUrl = "jdbc:mysql://127.0.0.1/db";
-            Class.forName(myDriver);
-            Connection conn = DriverManager.getConnection(myUrl, "tallys", "teste");
-
-            //String search = "SELECT * FROM Cliente WHERE User='" + beneficiarioField.getText() + "'";
-            String search2 = "SELECT * FROM Cliente WHERE User='" + "" + "'";
-
-            Statement st = (Statement) conn.createStatement();
-
-            String email = null, endBen = null, nomeBen = null, nBol = null, endPag = null, nomePag = null, agencia, digito, cpfPag = null, valor;
-            ResultSet rs2 = st.executeQuery(search2);
-            
-            DefaultCategoryDataset ds = new DefaultCategoryDataset();
-            /*while (rs2.next()) {
-                ds.addValue(rs2.getString(""), "maximo", "dia 6");
-
-            }*/
-            PreparedStatement preparedStmt2 = (PreparedStatement) conn.prepareStatement(search2);
-
-            preparedStmt2.execute();
-
-            
-            ds.addValue(40.5, "maximo", "dia 1");
-            ds.addValue(38.2, "maximo", "dia 2");
-            ds.addValue(37.3, "maximo", "dia 3");
-            ds.addValue(31.5, "maximo", "dia 4");
-            ds.addValue(35.7, "maximo", "dia 5");
-            
-        } catch (SQLException ex) {
-            Logger.getLogger(Gastos.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(Gastos.class.getName()).log(Level.SEVERE, null, ex);
-        }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
-}
 }

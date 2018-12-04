@@ -9,6 +9,7 @@ import javax.swing.JPanel;
 import pagamentos.model.Cliente;
 import pagamentos.view.ConsultaForm;
 import pagamentos.view.TransacaoForm;
+import simulacoes.Gastos;
 
 /**
  *
@@ -128,9 +129,13 @@ public class Principal extends javax.swing.JFrame {
         
         tabPane.addTab("Consulta de Clientes e Transações", tabConsulta);
     }//GEN-LAST:event_jMenuItem2ActionPerformed
-
+    JPanel tabGastos;
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
         // TODO add your handling code here:
+        tabGastos = new JPanel();
+        tabGastos.add(new Gastos(u));
+        
+        tabPane.addTab("Gastos", tabGastos);
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     /**

@@ -33,7 +33,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Transacao.findByCodTransacao", query = "SELECT t FROM Transacao t WHERE t.codTransacao = :codTransacao")
     , @NamedQuery(name = "Transacao.findByPagador", query = "SELECT t FROM Transacao t WHERE t.pagador = :pagador")
     , @NamedQuery(name = "Transacao.findByBeneficiario", query = "SELECT t FROM Transacao t WHERE t.beneficiario = :beneficiario")
-    , @NamedQuery(name = "Transacao.findByValorTransacao", query = "SELECT t FROM Transacao t WHERE t.valorTransacao = :valorTransacao")})
+    , @NamedQuery(name = "Transacao.findByValorTransacao", query = "SELECT t FROM Transacao t WHERE t.valorTransacao = :valorTransacao")
+    , @NamedQuery(name = "Transacao.findByDataTransacao", query = "SELECT t FROM Transacao t WHERE t.dataTransacao = :dataTransacao")})
 public class Transacao implements Serializable {
 
     @Transient
@@ -52,6 +53,8 @@ public class Transacao implements Serializable {
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "ValorTransacao")
     private BigDecimal valorTransacao;
+    @Column(name = "DataTransacao")
+    private String dataTransacao;
 
     public Transacao() {
     }
@@ -98,6 +101,16 @@ public class Transacao implements Serializable {
         BigDecimal oldValorTransacao = this.valorTransacao;
         this.valorTransacao = valorTransacao;
         changeSupport.firePropertyChange("valorTransacao", oldValorTransacao, valorTransacao);
+    }
+
+    public String getDataTransacao() {
+        return dataTransacao;
+    }
+
+    public void setDataTransacao(String dataTransacao) {
+        String oldDataTransacao = this.dataTransacao;
+        this.dataTransacao = dataTransacao;
+        changeSupport.firePropertyChange("dataTransacao", oldDataTransacao, dataTransacao);
     }
 
     @Override

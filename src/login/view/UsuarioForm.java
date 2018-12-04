@@ -15,7 +15,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
-import login.Email;
+import login.utils.Email;
 import pagamentos.model.Cliente;
 
 /**

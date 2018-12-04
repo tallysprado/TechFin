@@ -23,8 +23,8 @@ import javax.persistence.RollbackException;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import login.Email;
-import pagamentos.Utils.GerarBoleto;
+import login.utils.Email;
+import pagamentos.utils.GerarBoleto;
 import pagamentos.model.Cliente;
 
 /**

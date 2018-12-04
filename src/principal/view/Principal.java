@@ -10,7 +10,7 @@ import javax.swing.JPanel;
 import pagamentos.model.Cliente;
 import pagamentos.view.ConsultaForm;
 import pagamentos.view.TransacaoForm;
-import principal.Utils.ButtonTabComponent;
+import principal.utils.ButtonTabComponent;
 import simulacoes.Gastos;
 import pagamentos.view.ConsultaForm;
 /**
@@ -112,9 +112,7 @@ public class Principal extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(tabPane, javax.swing.GroupLayout.PREFERRED_SIZE, 376, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 62, Short.MAX_VALUE))
+            .addComponent(tabPane, javax.swing.GroupLayout.DEFAULT_SIZE, 438, Short.MAX_VALUE)
         );
 
         pack();

@@ -7,7 +7,6 @@ package principal.view;
 
 import javax.swing.JPanel;
 import pagamentos.model.Cliente;
-import pagamentos.view.Consulta;
 import pagamentos.view.ConsultaForm;
 import pagamentos.view.TransacaoForm;
 

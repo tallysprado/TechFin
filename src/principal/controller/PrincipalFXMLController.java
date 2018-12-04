@@ -43,7 +43,7 @@ public class PrincipalFXMLController implements Initializable {
         final SwingNode swingNode = new SwingNode();
         tabPagamentos = new Tab();
         panePagamentos = new Pane();
-        createSwingContent(swingNode);
+        //createSwingContent(swingNode);
         swingNode.setFocusTraversable(true);
         swingNode.setDisable(false);
         panePagamentos.getChildren().add(swingNode);
@@ -57,16 +57,18 @@ public class PrincipalFXMLController implements Initializable {
         panePagamentos.setVisible(true);
         tabPane.setVisible(true);
     }
-    
+    /*
     private void createSwingContent(final SwingNode swingNode) {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
                 //swingNode.setContent(new UsuarioForm());
-               swingNode.setContent(new TransacaoForm());
+               swingNode.setContent(new TransacaoForm(u));
                 
             }
         });
     }
+    */
+    
     
 }

@@ -104,11 +104,11 @@ public class LoginFXMLController implements Initializable {
                 pw.print(u.getNome());
                 fw.close();
                 */
-                
-                Stage stage = (Stage) usuarioField.getScene().getWindow();
-                stage.close();
                 Principal p = new Principal(u);
                 p.run();
+                Stage stage = (Stage) usuarioField.getScene().getWindow();
+                stage.close();
+                
                 break;
             }
         }

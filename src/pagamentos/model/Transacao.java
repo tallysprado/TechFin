@@ -5,21 +5,21 @@
  */
 package pagamentos.model;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -31,10 +31,13 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Transacao.findAll", query = "SELECT t FROM Transacao t")
     , @NamedQuery(name = "Transacao.findByCodTransacao", query = "SELECT t FROM Transacao t WHERE t.codTransacao = :codTransacao")
-    , @NamedQuery(name = "Transacao.findByCliente", query = "SELECT t FROM Transacao t WHERE t.cliente = :cliente")
-    , @NamedQuery(name = "Transacao.findByUsuario", query = "SELECT t FROM Transacao t WHERE t.usuario = :usuario")
+    , @NamedQuery(name = "Transacao.findByPagador", query = "SELECT t FROM Transacao t WHERE t.pagador = :pagador")
+    , @NamedQuery(name = "Transacao.findByBeneficiario", query = "SELECT t FROM Transacao t WHERE t.beneficiario = :beneficiario")
     , @NamedQuery(name = "Transacao.findByValorTransacao", query = "SELECT t FROM Transacao t WHERE t.valorTransacao = :valorTransacao")})
 public class Transacao implements Serializable {
+
+    @Transient
+    private PropertyChangeSupport changeSupport = new PropertyChangeSupport(this);
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -42,15 +45,13 @@ public class Transacao implements Serializable {
     @Basic(optional = false)
     @Column(name = "codTransacao")
     private Integer codTransacao;
-    @Column(name = "Cliente")
-    private String cliente;
-    @Column(name = "Usuario")
-    private String usuario;
+    @Column(name = "Pagador")
+    private String pagador;
+    @Column(name = "Beneficiario")
+    private String beneficiario;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "ValorTransacao")
     private BigDecimal valorTransacao;
-    @ManyToMany(mappedBy = "transacaoCollection")
-    private Collection<Cliente> clienteCollection;
 
     public Transacao() {
     }
@@ -64,23 +65,29 @@ public class Transacao implements Serializable {
     }
 
     public void setCodTransacao(Integer codTransacao) {
+        Integer oldCodTransacao = this.codTransacao;
         this.codTransacao = codTransacao;
+        changeSupport.firePropertyChange("codTransacao", oldCodTransacao, codTransacao);
     }
 
-    public String getCliente() {
-        return cliente;
+    public String getPagador() {
+        return pagador;
     }
 
-    public void setCliente(String cliente) {
-        this.cliente = cliente;
+    public void setPagador(String pagador) {
+        String oldPagador = this.pagador;
+        this.pagador = pagador;
+        changeSupport.firePropertyChange("pagador", oldPagador, pagador);
     }
 
-    public String getUsuario() {
-        return usuario;
+    public String getBeneficiario() {
+        return beneficiario;
     }
 
-    public void setUsuario(String usuario) {
-        this.usuario = usuario;
+    public void setBeneficiario(String beneficiario) {
+        String oldBeneficiario = this.beneficiario;
+        this.beneficiario = beneficiario;
+        changeSupport.firePropertyChange("beneficiario", oldBeneficiario, beneficiario);
     }
 
     public BigDecimal getValorTransacao() {
@@ -88,16 +95,9 @@ public class Transacao implements Serializable {
     }
 
     public void setValorTransacao(BigDecimal valorTransacao) {
+        BigDecimal oldValorTransacao = this.valorTransacao;
         this.valorTransacao = valorTransacao;
-    }
-
-    @XmlTransient
-    public Collection<Cliente> getClienteCollection() {
-        return clienteCollection;
-    }
-
-    public void setClienteCollection(Collection<Cliente> clienteCollection) {
-        this.clienteCollection = clienteCollection;
+        changeSupport.firePropertyChange("valorTransacao", oldValorTransacao, valorTransacao);
     }
 
     @Override
@@ -123,6 +123,14 @@ public class Transacao implements Serializable {
     @Override
     public String toString() {
         return "pagamentos.model.Transacao[ codTransacao=" + codTransacao + " ]";
+    }
+
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        changeSupport.addPropertyChangeListener(listener);
+    }
+
+    public void removePropertyChangeListener(PropertyChangeListener listener) {
+        changeSupport.removePropertyChangeListener(listener);
     }
     
 }

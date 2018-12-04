@@ -93,8 +93,9 @@ public class Principal extends javax.swing.JFrame {
         // TODO add your handling code here:
         tabTransacao = new JPanel();
         
-        
-        tabTransacao.add(new TransacaoForm());
+        TransacaoForm t = new TransacaoForm();
+        t.setField(u.getNome());
+        tabTransacao.add(t);
         
         tabPane.addTab("Transação", tabTransacao);
         
@@ -138,16 +139,18 @@ public class Principal extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                //new Principal(nome).setVisible(true);
+                
                 
                 
             }
         });
     }
+    
     public void run(){
         new Principal(u).setVisible(true);
-        
+        System.out.println(u.getNome());
     }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu jMenu1;

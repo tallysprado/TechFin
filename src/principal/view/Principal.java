@@ -153,10 +153,16 @@ public class Principal extends javax.swing.JFrame {
     JPanel tabGastos;
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
         // TODO add your handling code here:
+        
+        
         tabGastos = new JPanel();
         tabGastos.add(new Gastos(u));
         
-        tabPane.addTab("Gastos", tabGastos);
+        tabPane.addTab("Histórico de Transações", null, tabGastos, "Gastos e ganhos.");
+        tabPane.setSelectedComponent(tabGastos);
+        
+        int i = tabPane.getSelectedIndex();
+        tabPane.setTabComponentAt(i, new ButtonTabComponent(tabPane));
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     /**

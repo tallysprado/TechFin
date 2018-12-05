@@ -453,7 +453,8 @@ public class TransacaoForm extends JPanel {
             gBoleto.geraBoleto(endBen, nomeBen, nBol, endPag, nomePag, agencia, digito, cpfPag, valor);
             //GerarBoleto.geraBoleto("teste", "teste", "teste", "teste", "teste", "teste", "teste", "teste", "200");
             Thread.sleep(2000);
-            new Email().sendAttachEmail(email, "Você tem uma nova cobrança! - TechFin", "Pague ao " + nomeBen + " agora!", "/home/tallys/teste/TechFin/src/pagamentos/Utils/Boleto.pdf");
+            //new Email().sendAttachEmail(email, "Você tem uma nova cobrança! - TechFin", "Pague ao " + nomeBen + " agora!", "/home/tallys/teste/TechFin/src/pagamentos/Utils/Boleto.pdf");
+            new Email().sendAttachEmail2(email, "Você tem uma nova cobrança! - TechFin", "Pague ao " + nomeBen + " agora!", "/home/tallys/teste/TechFin/src/pagamentos/utils/Boleto.pdf","grafico.png");
 
         } catch (SQLException ex) {
             Logger.getLogger(TransacaoForm.class.getName()).log(Level.SEVERE, null, ex);

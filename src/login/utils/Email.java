@@ -115,6 +115,45 @@ public class Email {
         System.out.println("Enviado com sucesso!");
     }
     
+    public void sendAttachEmail2(String to, String subject, String body, String attach, String attach2) {
+        Properties p = getProps();
+        Authenticator auth = new SMTPAuthenticator();
+        Session session = Session.getInstance(p, auth);
+        MimeMessage msg = new MimeMessage(session);
+        MimeBodyPart mbp = new MimeBodyPart();
+        MimeBodyPart mbp2 = new MimeBodyPart();
+        try {
+            // "de" e "para"!!
+            msg.setFrom(new InternetAddress("tallysprado@alu.ufc.br"));
+            
+            msg.setRecipients(Message.RecipientType.TO, to);
+            msg.setSentDate(new Date());
+            msg.setSubject(subject);
+            msg.setText(body);
+            
+            //enviando anexo
+            DataSource fds = new FileDataSource(attach);
+            DataSource fds2 = new FileDataSource(attach2);
+            mbp2.setDisposition(Part.INLINE);
+            mbp2.setDataHandler(new DataHandler(fds2));
+            mbp2.setFileName(fds2.getName());
+            mbp.setDisposition(Part.ATTACHMENT);
+            mbp.setDataHandler(new DataHandler(fds));
+            mbp.setFileName(fds.getName());
+            Multipart mp = new MimeMultipart();
+            mp.addBodyPart(mbp);
+            mp.addBodyPart(mbp2);
+            msg.setContent(mp);
+            // enviando mensagem
+            Transport.send(msg);
+        } catch (AddressException e) {
+            e.printStackTrace();
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+        System.out.println("Enviado com sucesso!");
+    }
+    
     private static Properties getProps() {
         Properties p = new Properties();
         p.put("mail.transport.protocol", "smtp");

@@ -15,9 +15,15 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.function.Function;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
+import javax.mail.internet.ParseException;
 import javax.swing.ImageIcon;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -63,19 +69,16 @@ public class Gastos extends javax.swing.JPanel {
             ResultSet rs = st.executeQuery(search);
 
             DefaultCategoryDataset ds = new DefaultCategoryDataset();
-            
+
             ArrayList<Double> transacaoList = new ArrayList<Double>();
             ArrayList<String> dataList = new ArrayList<String>();
             while (rs.next()) {
-                
+
                 transacaoList.add(rs.getDouble("ValorTransacao"));
                 dataList.add(rs.getString("DataTransacao"));
 
             }
-            
-            
-            
-            
+
             /*
             String search2 = "SELECT * FROM Transacao NATURAL JOIN Cliente_tem_Transacao WHERE Cliente_tem_Transacao.Id_Cliente='" + u.getIdCliente() + "'";
             Statement st2 = conn.createStatement();
@@ -87,20 +90,18 @@ public class Gastos extends javax.swing.JPanel {
                 dataList.add(rs2.getString("DataTransacao"));
             }
              */
-            String searchGasto = "SELECT * FROM Transacao WHERE Pagador='"+u.getUser()+"'";
+            String searchGasto = "SELECT * FROM Transacao WHERE Pagador='" + u.getUser() + "'";
             Statement st4 = conn.createStatement();
             ResultSet rs4 = st4.executeQuery(searchGasto);
             ArrayList<Double> gastoList = new ArrayList<Double>();
             ArrayList<String> data2List = new ArrayList<String>();
-            
-            
+
             while (rs4.next()) {
                 gastoList.add(rs4.getDouble("ValorTransacao"));
                 data2List.add(rs4.getString("DataTransacao"));
-                
+
             }
-            
-            
+
             /*
             String searchData = "SELECT DataTransacao FROM Transacao NATURAL RIGHT JOIN Cliente_tem_Transacao WHERE Cliente_tem_Transacao.Id_Cliente='" + u.getIdCliente() + "'";
             Statement st5 = conn.createStatement();
@@ -109,9 +110,8 @@ public class Gastos extends javax.swing.JPanel {
             while (rs5.next()) {
                 data2List.add(rs5.getString("DataTransacao"));
             }
-            */
-            
-            /*int j = 0;
+             */
+ /*int j = 0;
             if(gastoList.size()>transacaoList.size()){
                 j = gastoList.size();
             }
@@ -122,28 +122,28 @@ public class Gastos extends javax.swing.JPanel {
             if(transacaoList.size()==gastoList.size()){
                 j = transacaoList.size();
             }*/
-            
-            
+            SimpleDateFormat f = new SimpleDateFormat("dd/MM/yyyy");
+
             for (int i = 0; i < gastoList.size(); i++) {
                 ds.addValue(gastoList.get(i), "Gastos", data2List.get(i));
-                
-                
-                
+
                 System.out.println(gastoList);
                 System.out.println(data2List);
                 System.out.println(transacaoList);
                 System.out.println(dataList);
             }
-            for( int i = 0; i< transacaoList.size(); i++){
+            for (int i = 0; i < transacaoList.size(); i++) {
                 ds.addValue(transacaoList.get(i), "Ganhos", dataList.get(i));
+
             }
             
+           
 
             JFreeChart grafico = ChartFactory.createLineChart("Meu Grafico", "Dia", "Valor", ds, PlotOrientation.VERTICAL, true, true, false);
-            
+
             ChartPanel cp = new ChartPanel(grafico);
             this.setLayout(new BorderLayout());
-            
+
             this.add(cp, BorderLayout.CENTER);
             this.validate();
             //OutputStream arquivo = new FileOutputStream("grafico.png");
@@ -153,7 +153,6 @@ public class Gastos extends javax.swing.JPanel {
             //ImageIcon icon = new ImageIcon("grafico.png");
             //labelImage.setIcon(icon);
             //arquivo.close();
-
         } catch (SQLException ex) {
             Logger.getLogger(Gastos.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {

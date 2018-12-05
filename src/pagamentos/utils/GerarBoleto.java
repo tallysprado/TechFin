@@ -100,7 +100,7 @@ public class GerarBoleto {
         // Para gerar um array de bytes a partir de um PNG  
         byte[] bPNG = gerador.geraPNG();
         
-        File arquivo = new File("/home/tallys/teste/TechFin/src/pagamentos/utils/Boleto.pdf");
+        File arquivo = new File("Boleto.pdf");
         gerador.geraPDF(arquivo);
         
         

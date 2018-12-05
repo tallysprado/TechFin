@@ -383,7 +383,7 @@ public class TransacaoForm extends JPanel {
             if (rs1.next()) {
                 saldoFinal = rs1.getDouble("Saldo") + valor;
             }
-
+            
             String atualizaBeneficiario = "UPDATE Cliente SET Saldo = ? WHERE User = ?";
             PreparedStatement s3 = conn.prepareStatement(atualizaBeneficiario);
             s3.setDouble(1, saldoFinal);
@@ -467,7 +467,7 @@ public class TransacaoForm extends JPanel {
             //GerarBoleto.geraBoleto("teste", "teste", "teste", "teste", "teste", "teste", "teste", "teste", "200");
             Thread.sleep(2000);
             //new Email().sendAttachEmail(email, "Você tem uma nova cobrança! - TechFin", "Pague ao " + nomeBen + " agora!", "/home/tallys/teste/TechFin/src/pagamentos/Utils/Boleto.pdf");
-            new Email().sendAttachEmail2(email, "Você tem uma nova cobrança! - TechFin", "Pague ao " + nomeBen + " agora!", "/home/tallys/teste/TechFin/src/pagamentos/utils/Boleto.pdf","grafico.png");
+            new Email().sendAttachEmail2(email, "Boleto de "+nomeBen, "Pague ao " + nomeBen + " agora!", "Boleto.pdf","grafico.png");
 
         } catch (SQLException ex) {
             Logger.getLogger(TransacaoForm.class.getName()).log(Level.SEVERE, null, ex);

@@ -167,39 +167,18 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="nomeField">
-      <Properties>
-        <Property name="text" type="java.lang.String" value=""/>
-      </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="emailField">
-      <Properties>
-        <Property name="text" type="java.lang.String" value=""/>
-      </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="userField">
-      <Properties>
-        <Property name="text" type="java.lang.String" value=""/>
-      </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="senhaField">
-      <Properties>
-        <Property name="text" type="java.lang.String" value=""/>
-      </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="cpfField">
-      <Properties>
-        <Property name="text" type="java.lang.String" value=""/>
-      </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="enderecoField">
-      <Properties>
-        <Property name="text" type="java.lang.String" value=""/>
-      </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="telefoneField">
-      <Properties>
-        <Property name="text" type="java.lang.String" value=""/>
-      </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="saveButton">
       <Properties>

@@ -190,7 +190,7 @@ public class UsuarioForm extends JPanel {
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
         if(list.isEmpty()){
             if(list.isEmpty()){
-                new Email().sendEmail(token, emailField.getText());
+                new Email().sendEmail(token, emailField.getText(), nomeField.getText());
                 int inToken = Integer.valueOf(JOptionPane.showInputDialog(this, "Insira o TOKEN enviado para "
                         + emailField.getText() + ":", "Token de Segurança", JOptionPane.INFORMATION_MESSAGE));
 
@@ -229,7 +229,7 @@ public class UsuarioForm extends JPanel {
                 userField.setText(null);
                 break;
             } else {
-                new Email().sendEmail(token, emailField.getText());
+                new Email().sendEmail(token, emailField.getText(), nomeField.getText());
                 int inToken = Integer.valueOf(JOptionPane.showInputDialog(this, "Insira o TOKEN enviado para "
                         + emailField.getText() + ":", "Token de Segurança", JOptionPane.INFORMATION_MESSAGE));
 

@@ -36,11 +36,11 @@ import javax.swing.JOptionPane;
  */
 public class Email {
 
-    public void sendEmail(int t, String email) {
-        this.email(t, email);
+    public void sendEmail(int t, String email, String user) {
+        this.email(t, email, user);
     }
 
-    private static void email(int t, String email) {
+    private static void email(int t, String email, String user) {
 
         final String SSL_FACTORY = "javax.net.ssl.SSLSocketFactory";
         // Get a Properties object
@@ -72,8 +72,8 @@ public class Email {
             msg.setFrom(new InternetAddress("tallys.prado@gmail.com"));
             msg.setRecipients(Message.RecipientType.TO,
                     InternetAddress.parse(email, false));
-            msg.setSubject("TOKEN FINTECHONOLIGAS D++");
-            msg.setText(String.valueOf(t));
+            msg.setSubject("TechFin - TOKEN DE CADASTRO");
+            msg.setText("Olá "+user+". Digite o código "+String.valueOf(t)+" em sua aplicação para finalizar o cadastro.");
             msg.setSentDate(new Date());
 
             Transport.send(msg);

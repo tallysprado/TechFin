@@ -114,7 +114,7 @@ public class Email {
         }
         System.out.println("Enviado com sucesso!");
     }
-
+    
     private static Properties getProps() {
         Properties p = new Properties();
         p.put("mail.transport.protocol", "smtp");
@@ -123,6 +123,9 @@ public class Email {
         p.put("mail.smtp.auth", "true");
         return p;
     }
+    
+    
+ 
 }
 
 class SMTPAuthenticator extends javax.mail.Authenticator {

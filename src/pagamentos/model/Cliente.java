@@ -5,8 +5,6 @@
  */
 package pagamentos.model;
 
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import javax.persistence.Basic;
@@ -18,7 +16,6 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -41,9 +38,6 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Cliente.findByTelefone", query = "SELECT c FROM Cliente c WHERE c.telefone = :telefone")
     , @NamedQuery(name = "Cliente.findBySaldo", query = "SELECT c FROM Cliente c WHERE c.saldo = :saldo")})
 public class Cliente implements Serializable {
-
-    @Transient
-    private PropertyChangeSupport changeSupport = new PropertyChangeSupport(this);
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -83,9 +77,7 @@ public class Cliente implements Serializable {
     }
 
     public void setIdCliente(Integer idCliente) {
-        Integer oldIdCliente = this.idCliente;
         this.idCliente = idCliente;
-        changeSupport.firePropertyChange("idCliente", oldIdCliente, idCliente);
     }
 
     public String getNome() {
@@ -93,9 +85,7 @@ public class Cliente implements Serializable {
     }
 
     public void setNome(String nome) {
-        String oldNome = this.nome;
         this.nome = nome;
-        changeSupport.firePropertyChange("nome", oldNome, nome);
     }
 
     public String getEmail() {
@@ -103,9 +93,7 @@ public class Cliente implements Serializable {
     }
 
     public void setEmail(String email) {
-        String oldEmail = this.email;
         this.email = email;
-        changeSupport.firePropertyChange("email", oldEmail, email);
     }
 
     public String getUser() {
@@ -113,9 +101,7 @@ public class Cliente implements Serializable {
     }
 
     public void setUser(String user) {
-        String oldUser = this.user;
         this.user = user;
-        changeSupport.firePropertyChange("user", oldUser, user);
     }
 
     public String getSenha() {
@@ -123,9 +109,7 @@ public class Cliente implements Serializable {
     }
 
     public void setSenha(String senha) {
-        String oldSenha = this.senha;
         this.senha = senha;
-        changeSupport.firePropertyChange("senha", oldSenha, senha);
     }
 
     public String getToken() {
@@ -133,9 +117,7 @@ public class Cliente implements Serializable {
     }
 
     public void setToken(String token) {
-        String oldToken = this.token;
         this.token = token;
-        changeSupport.firePropertyChange("token", oldToken, token);
     }
 
     public String getCpf() {
@@ -143,9 +125,7 @@ public class Cliente implements Serializable {
     }
 
     public void setCpf(String cpf) {
-        String oldCpf = this.cpf;
         this.cpf = cpf;
-        changeSupport.firePropertyChange("cpf", oldCpf, cpf);
     }
 
     public String getEndereco() {
@@ -153,9 +133,7 @@ public class Cliente implements Serializable {
     }
 
     public void setEndereco(String endereco) {
-        String oldEndereco = this.endereco;
         this.endereco = endereco;
-        changeSupport.firePropertyChange("endereco", oldEndereco, endereco);
     }
 
     public String getTelefone() {
@@ -163,9 +141,7 @@ public class Cliente implements Serializable {
     }
 
     public void setTelefone(String telefone) {
-        String oldTelefone = this.telefone;
         this.telefone = telefone;
-        changeSupport.firePropertyChange("telefone", oldTelefone, telefone);
     }
 
     public BigDecimal getSaldo() {
@@ -173,9 +149,7 @@ public class Cliente implements Serializable {
     }
 
     public void setSaldo(BigDecimal saldo) {
-        BigDecimal oldSaldo = this.saldo;
         this.saldo = saldo;
-        changeSupport.firePropertyChange("saldo", oldSaldo, saldo);
     }
 
     @Override
@@ -201,14 +175,6 @@ public class Cliente implements Serializable {
     @Override
     public String toString() {
         return "pagamentos.model.Cliente[ idCliente=" + idCliente + " ]";
-    }
-
-    public void addPropertyChangeListener(PropertyChangeListener listener) {
-        changeSupport.addPropertyChangeListener(listener);
-    }
-
-    public void removePropertyChangeListener(PropertyChangeListener listener) {
-        changeSupport.removePropertyChangeListener(listener);
     }
     
 }

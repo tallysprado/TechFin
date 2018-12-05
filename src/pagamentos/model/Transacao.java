@@ -5,8 +5,6 @@
  */
 package pagamentos.model;
 
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import javax.persistence.Basic;
@@ -18,7 +16,6 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -36,9 +33,6 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Transacao.findByValorTransacao", query = "SELECT t FROM Transacao t WHERE t.valorTransacao = :valorTransacao")
     , @NamedQuery(name = "Transacao.findByDataTransacao", query = "SELECT t FROM Transacao t WHERE t.dataTransacao = :dataTransacao")})
 public class Transacao implements Serializable {
-
-    @Transient
-    private PropertyChangeSupport changeSupport = new PropertyChangeSupport(this);
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -68,9 +62,7 @@ public class Transacao implements Serializable {
     }
 
     public void setCodTransacao(Integer codTransacao) {
-        Integer oldCodTransacao = this.codTransacao;
         this.codTransacao = codTransacao;
-        changeSupport.firePropertyChange("codTransacao", oldCodTransacao, codTransacao);
     }
 
     public String getPagador() {
@@ -78,9 +70,7 @@ public class Transacao implements Serializable {
     }
 
     public void setPagador(String pagador) {
-        String oldPagador = this.pagador;
         this.pagador = pagador;
-        changeSupport.firePropertyChange("pagador", oldPagador, pagador);
     }
 
     public String getBeneficiario() {
@@ -88,9 +78,7 @@ public class Transacao implements Serializable {
     }
 
     public void setBeneficiario(String beneficiario) {
-        String oldBeneficiario = this.beneficiario;
         this.beneficiario = beneficiario;
-        changeSupport.firePropertyChange("beneficiario", oldBeneficiario, beneficiario);
     }
 
     public BigDecimal getValorTransacao() {
@@ -98,9 +86,7 @@ public class Transacao implements Serializable {
     }
 
     public void setValorTransacao(BigDecimal valorTransacao) {
-        BigDecimal oldValorTransacao = this.valorTransacao;
         this.valorTransacao = valorTransacao;
-        changeSupport.firePropertyChange("valorTransacao", oldValorTransacao, valorTransacao);
     }
 
     public String getDataTransacao() {
@@ -108,9 +94,7 @@ public class Transacao implements Serializable {
     }
 
     public void setDataTransacao(String dataTransacao) {
-        String oldDataTransacao = this.dataTransacao;
         this.dataTransacao = dataTransacao;
-        changeSupport.firePropertyChange("dataTransacao", oldDataTransacao, dataTransacao);
     }
 
     @Override
@@ -135,15 +119,7 @@ public class Transacao implements Serializable {
 
     @Override
     public String toString() {
-        return "pagamentos.model.Transacao[ codTransacao=" + codTransacao + " ]";
-    }
-
-    public void addPropertyChangeListener(PropertyChangeListener listener) {
-        changeSupport.addPropertyChangeListener(listener);
-    }
-
-    public void removePropertyChangeListener(PropertyChangeListener listener) {
-        changeSupport.removePropertyChangeListener(listener);
+        return "pagamentos.Transacao[ codTransacao=" + codTransacao + " ]";
     }
     
 }

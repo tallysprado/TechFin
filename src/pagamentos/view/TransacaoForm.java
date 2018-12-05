@@ -53,7 +53,8 @@ public class TransacaoForm extends JPanel {
         System.out.println(u);
         pagadorField.setText(u);
         pagadorField.setEditable(false);
-
+        //saldoField.setText(String.valueOf(c.getSaldo()));
+        
         dataTransacaoField.setEditable(true);
         dataTransacaoField.setText(formatador.format(d));
     }
@@ -120,6 +121,8 @@ public class TransacaoForm extends JPanel {
         jButton1 = new javax.swing.JButton();
         dataTransacaoField = new javax.swing.JTextField();
         pagadorField = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
+        saldoField = new javax.swing.JTextField();
 
         FormListener formListener = new FormListener();
 
@@ -195,6 +198,8 @@ public class TransacaoForm extends JPanel {
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement.pagador}"), pagadorField, org.jdesktop.beansbinding.BeanProperty.create("text"));
         bindingGroup.addBinding(binding);
 
+        jLabel1.setText("Saldo:");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -212,21 +217,23 @@ public class TransacaoForm extends JPanel {
                         .addComponent(refreshButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(saveButton))
+                    .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 556, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(codTransacaoLabel)
                             .addComponent(pagadorLabel)
                             .addComponent(beneficiarioLabel)
                             .addComponent(valorTransacaoLabel)
-                            .addComponent(dataTransacaoLabel))
+                            .addComponent(dataTransacaoLabel)
+                            .addComponent(jLabel1))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(codTransacaoField, javax.swing.GroupLayout.DEFAULT_SIZE, 447, Short.MAX_VALUE)
                             .addComponent(beneficiarioField, javax.swing.GroupLayout.DEFAULT_SIZE, 447, Short.MAX_VALUE)
                             .addComponent(valorTransacaoField, javax.swing.GroupLayout.DEFAULT_SIZE, 447, Short.MAX_VALUE)
                             .addComponent(dataTransacaoField)
-                            .addComponent(pagadorField)))
-                    .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 556, Short.MAX_VALUE))
+                            .addComponent(pagadorField)
+                            .addComponent(saldoField))))
                 .addContainerGap())
         );
 
@@ -236,7 +243,7 @@ public class TransacaoForm extends JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)
+                .addComponent(masterScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(codTransacaoLabel)
@@ -258,6 +265,10 @@ public class TransacaoForm extends JPanel {
                     .addComponent(dataTransacaoLabel)
                     .addComponent(dataTransacaoField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(saldoField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(saveButton)
                     .addComponent(refreshButton)
@@ -347,21 +358,23 @@ public class TransacaoForm extends JPanel {
                 saldo = rs2.getDouble("Saldo");
             }
             double valor = Double.valueOf(valorTransacaoField.getText());
-            if (saldo <= valor) {
+            if (saldo < valor) {
                 JOptionPane.showMessageDialog(this, "Saldo - Valor da Transferência = " + (saldo - valor), "Saldo insuficiente!", JOptionPane.OK_OPTION);
                 return;
             }
             //PreparedStatement preparedStmt2 = (PreparedStatement) conn.prepareStatement(saldoPagador);
             //preparedStmt2.execute();
-
+            
             String atualizaPagador = "UPDATE Cliente SET saldo = ? WHERE User = ?";
 
             PreparedStatement s2 = (PreparedStatement) conn.prepareStatement(atualizaPagador);
             s2.setDouble(1, (saldo - valor));
             s2.setString(2, pagadorField.getText());
-
+            
             s2.execute();
-
+            
+            saldoField.setText(String.valueOf(saldo-valor));
+            
             String saldoBeneficiario = "SELECT Saldo FROM Cliente WHERE User='" + beneficiarioField.getText() + "'";
             Statement st2 = (Statement) conn.createStatement();
 
@@ -476,6 +489,7 @@ public class TransacaoForm extends JPanel {
     private javax.swing.JButton deleteButton;
     private javax.persistence.EntityManager entityManager;
     private javax.swing.JButton jButton1;
+    private javax.swing.JLabel jLabel1;
     private java.util.List<pagamentos.model.Transacao> list;
     private javax.swing.JScrollPane masterScrollPane;
     private javax.swing.JTable masterTable;
@@ -484,6 +498,7 @@ public class TransacaoForm extends JPanel {
     private javax.swing.JLabel pagadorLabel;
     private javax.persistence.Query query;
     private javax.swing.JButton refreshButton;
+    private javax.swing.JTextField saldoField;
     private javax.swing.JButton saveButton;
     private javax.swing.JTextField valorTransacaoField;
     private javax.swing.JLabel valorTransacaoLabel;

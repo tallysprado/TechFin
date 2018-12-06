@@ -53,7 +53,7 @@ public class TransacaoForm extends JPanel {
         System.out.println(u);
         pagadorField.setText(u);
         pagadorField.setEditable(false);
-        //saldoField.setText(String.valueOf(c.getSaldo()));
+        
         
         dataTransacaoField.setEditable(true);
         dataTransacaoField.setText(formatador.format(d));
@@ -357,6 +357,7 @@ public class TransacaoForm extends JPanel {
             if (rs2.next()) {
                 saldo = rs2.getDouble("Saldo");
             }
+            saldoField.setText(String.valueOf(saldo));
             double valor = Double.valueOf(valorTransacaoField.getText());
             if (saldo < valor) {
                 JOptionPane.showMessageDialog(this, "Saldo - Valor da Transferência = " + (saldo - valor), "Saldo insuficiente!", JOptionPane.OK_OPTION);

@@ -149,12 +149,7 @@ public class LoginFXMLController implements Initializable {
                 stage.close();
 
                 break;
-            } else {
-                JOptionPane.showMessageDialog(null, "Usuário não encontrado!", "Aviso!", JOptionPane.OK_OPTION);
-
-                break;
-
-            }
+            } 
         }
     }
 

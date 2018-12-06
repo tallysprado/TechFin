@@ -173,15 +173,19 @@ public class TransacaoForm extends JPanel {
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ_WRITE, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), valorTransacaoField, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
         bindingGroup.addBinding(binding);
 
+        saveButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/save.png"))); // NOI18N
         saveButton.setText("Salvar");
         saveButton.addActionListener(formListener);
 
+        refreshButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/refresh.png"))); // NOI18N
         refreshButton.setText("Atualizar");
         refreshButton.addActionListener(formListener);
 
+        newButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/folder.png"))); // NOI18N
         newButton.setText("Novo");
         newButton.addActionListener(formListener);
 
+        deleteButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/file.png"))); // NOI18N
         deleteButton.setText("Deletar");
 
         binding = org.jdesktop.beansbinding.Bindings.createAutoBinding(org.jdesktop.beansbinding.AutoBinding.UpdateStrategy.READ, masterTable, org.jdesktop.beansbinding.ELProperty.create("${selectedElement != null}"), deleteButton, org.jdesktop.beansbinding.BeanProperty.create("enabled"));
@@ -189,6 +193,7 @@ public class TransacaoForm extends JPanel {
 
         deleteButton.addActionListener(formListener);
 
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/pay-per-click.png"))); // NOI18N
         jButton1.setText("Gerar Boleto");
         jButton1.addActionListener(formListener);
 
@@ -217,7 +222,7 @@ public class TransacaoForm extends JPanel {
                         .addComponent(refreshButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(saveButton))
-                    .addComponent(masterScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 556, Short.MAX_VALUE)
+                    .addComponent(masterScrollPane)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(codTransacaoLabel)
@@ -228,9 +233,9 @@ public class TransacaoForm extends JPanel {
                             .addComponent(jLabel1))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(codTransacaoField, javax.swing.GroupLayout.DEFAULT_SIZE, 447, Short.MAX_VALUE)
-                            .addComponent(beneficiarioField, javax.swing.GroupLayout.DEFAULT_SIZE, 447, Short.MAX_VALUE)
-                            .addComponent(valorTransacaoField, javax.swing.GroupLayout.DEFAULT_SIZE, 447, Short.MAX_VALUE)
+                            .addComponent(codTransacaoField)
+                            .addComponent(beneficiarioField)
+                            .addComponent(valorTransacaoField)
                             .addComponent(dataTransacaoField)
                             .addComponent(pagadorField)
                             .addComponent(saldoField))))

@@ -66,7 +66,7 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="saveButton" linkSize="1" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <Component id="masterScrollPane" pref="556" max="32767" attributes="0"/>
+                  <Component id="masterScrollPane" max="32767" attributes="0"/>
                   <Group type="102" alignment="0" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="codTransacaoLabel" alignment="0" min="-2" max="-2" attributes="0"/>
@@ -78,9 +78,9 @@
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="codTransacaoField" alignment="0" pref="447" max="32767" attributes="0"/>
-                          <Component id="beneficiarioField" alignment="0" pref="447" max="32767" attributes="0"/>
-                          <Component id="valorTransacaoField" alignment="0" pref="447" max="32767" attributes="0"/>
+                          <Component id="codTransacaoField" alignment="0" max="32767" attributes="0"/>
+                          <Component id="beneficiarioField" alignment="0" max="32767" attributes="0"/>
+                          <Component id="valorTransacaoField" alignment="0" max="32767" attributes="0"/>
                           <Component id="dataTransacaoField" alignment="0" max="32767" attributes="0"/>
                           <Component id="pagadorField" alignment="0" max="32767" attributes="0"/>
                           <Component id="saldoField" alignment="0" max="32767" attributes="0"/>
@@ -228,6 +228,9 @@
     </Component>
     <Component class="javax.swing.JButton" name="saveButton">
       <Properties>
+        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+          <Image iconType="3" name="/icons/save.png"/>
+        </Property>
         <Property name="text" type="java.lang.String" value="Salvar"/>
       </Properties>
       <Events>
@@ -240,6 +243,9 @@
     </Component>
     <Component class="javax.swing.JButton" name="refreshButton">
       <Properties>
+        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+          <Image iconType="3" name="/icons/refresh.png"/>
+        </Property>
         <Property name="text" type="java.lang.String" value="Atualizar"/>
       </Properties>
       <Events>
@@ -252,6 +258,9 @@
     </Component>
     <Component class="javax.swing.JButton" name="newButton">
       <Properties>
+        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+          <Image iconType="3" name="/icons/folder.png"/>
+        </Property>
         <Property name="text" type="java.lang.String" value="Novo"/>
       </Properties>
       <Events>
@@ -264,6 +273,9 @@
     </Component>
     <Component class="javax.swing.JButton" name="deleteButton">
       <Properties>
+        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+          <Image iconType="3" name="/icons/file.png"/>
+        </Property>
         <Property name="text" type="java.lang.String" value="Deletar"/>
       </Properties>
       <BindingProperties>
@@ -279,6 +291,9 @@
     </Component>
     <Component class="javax.swing.JButton" name="jButton1">
       <Properties>
+        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+          <Image iconType="3" name="/icons/pay-per-click.png"/>
+        </Property>
         <Property name="text" type="java.lang.String" value="Gerar Boleto"/>
       </Properties>
       <Events>

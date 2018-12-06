@@ -93,20 +93,7 @@ public class UsuarioForm extends JPanel {
 
         telefoneLabel.setText("Telefone:");
 
-        nomeField.setText("");
-
-        emailField.setText("");
-
-        userField.setText("");
-
-        senhaField.setText("");
-
-        cpfField.setText("");
-
-        enderecoField.setText("");
-
-        telefoneField.setText("");
-
+        saveButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/save.png"))); // NOI18N
         saveButton.setText("Salvar");
         saveButton.addActionListener(formListener);
 

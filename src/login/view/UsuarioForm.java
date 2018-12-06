@@ -9,13 +9,21 @@ import java.awt.Color;
 import java.awt.EventQueue;
 import java.beans.Beans;
 import java.math.BigDecimal;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.RollbackException;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+import login.controller.LoginFXMLController;
 import login.utils.Email;
 import pagamentos.model.Cliente;
 
@@ -175,47 +183,53 @@ public class UsuarioForm extends JPanel {
         }
     }// </editor-fold>//GEN-END:initComponents
 
+    private void refresh() {
+        //entityManager.getTransaction().rollback();
 
-    private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
-
-        if (list.isEmpty()) {
-            new Email().sendEmail(token, emailField.getText(), nomeField.getText());
-            int inToken = Integer.valueOf(JOptionPane.showInputDialog(this, "Insira o TOKEN enviado para "
-                    + emailField.getText() + ":", "Token de Segurança", JOptionPane.INFORMATION_MESSAGE));
-
-            if (token == inToken) {
-
-                u = new Cliente();
-
-                u.setToken(String.valueOf(token));
-                u.setEmail(emailField.getText());
-                u.setNome(nomeField.getText());
-                u.setSenha(senhaField.getText());
-                u.setUser(userField.getText());
-                u.setSaldo(new BigDecimal(100.00));
-                entityManager.persist(u);
-                entityManager.getTransaction().commit();
-
-                JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
-                topFrame.dispose();
-
-            } else {
-                JOptionPane.showMessageDialog(this, "Token Incorreto!");
-            }
-        }
-
+        entityManager.getTransaction().begin();
         java.util.Collection data = query.getResultList();
         for (Object entity : data) {
             entityManager.refresh(entity);
         }
+        list.clear();
+        list.addAll(data);
 
-        for (Cliente u : list) {
-            if (userField.getText().equals(u.getUser())) {
+    }
+    boolean existe = false;
+
+    private void login2() {
+        try {
+            String myDriver = "com.mysql.jdbc.Driver";
+            String myUrl = "jdbc:mysql://127.0.0.1/db";
+            Class.forName(myDriver);
+            Connection conn = DriverManager.getConnection(myUrl, "tallys", "teste");
+
+            //String search = "SELECT * FROM Cliente WHERE User='" + beneficiarioField.getText() + "'";
+            String search2 = "SELECT * FROM Cliente WHERE User='" + userField.getText() + "'";
+
+            Statement st = (Statement) conn.createStatement();
+
+            ResultSet rs2 = st.executeQuery(search2);
+            if (rs2.next()) {
                 JOptionPane.showMessageDialog(this, "Nome de usuário existente!");
                 userLabel.setForeground(Color.red);
                 userField.setText(null);
-                break;
-            } else {
+                existe = true;
+                return;
+            }else{
+                existe = false;
+            }
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(LoginFXMLController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(LoginFXMLController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
+        login2();
+        if (!existe) {
+            if (list.isEmpty()) {
                 new Email().sendEmail(token, emailField.getText(), nomeField.getText());
                 int inToken = Integer.valueOf(JOptionPane.showInputDialog(this, "Insira o TOKEN enviado para "
                         + emailField.getText() + ":", "Token de Segurança", JOptionPane.INFORMATION_MESSAGE));
@@ -235,10 +249,49 @@ public class UsuarioForm extends JPanel {
 
                     JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
                     topFrame.dispose();
-                    break;
 
                 } else {
                     JOptionPane.showMessageDialog(this, "Token Incorreto!");
+                }
+            } else {
+
+                java.util.Collection data = query.getResultList();
+                for (Object entity : data) {
+                    entityManager.refresh(entity);
+                }
+
+                for (Cliente u : list) {
+                    if (userField.getText().equals(u.getUser())) {
+                        JOptionPane.showMessageDialog(this, "Nome de usuário existente!");
+                        userLabel.setForeground(Color.red);
+                        userField.setText(null);
+                        break;
+                    } else {
+                        new Email().sendEmail(token, emailField.getText(), nomeField.getText());
+                        int inToken = Integer.valueOf(JOptionPane.showInputDialog(this, "Insira o TOKEN enviado para "
+                                + emailField.getText() + ":", "Token de Segurança", JOptionPane.INFORMATION_MESSAGE));
+
+                        if (token == inToken) {
+
+                            u = new Cliente();
+
+                            u.setToken(String.valueOf(token));
+                            u.setEmail(emailField.getText());
+                            u.setNome(nomeField.getText());
+                            u.setSenha(senhaField.getText());
+                            u.setUser(userField.getText());
+                            u.setSaldo(new BigDecimal(100.00));
+                            entityManager.persist(u);
+                            entityManager.getTransaction().commit();
+
+                            JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
+                            topFrame.dispose();
+                            break;
+
+                        } else {
+                            JOptionPane.showMessageDialog(this, "Token Incorreto!");
+                        }
+                    }
                 }
             }
         }
